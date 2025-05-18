@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import type { AppDispatch } from "@/redux/store";
 import * as Yup from "yup";
 import {Formik,Form,Field,ErrorMessage} from "formik";
-
+import { useRouter } from 'next/navigation';
 const validationSchema = Yup.object({
     username: Yup.string().required("Username is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -22,6 +22,7 @@ const validationSchema = Yup.object({
 
 
 export default function Registerpage(){
+    const router = useRouter(); 
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -47,32 +48,85 @@ export default function Registerpage(){
        <main className="flex flex-col items-center justify-between p-24">
         <h1 className="text-2xl font-bold">Tautin</h1>
         <h1 className="text-2xl font-bold">Let's create an account! </h1>  
-        <form  onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4 w-80">
-          {error && (
-    <div className="text-red-500 bg-red-100 p-2 rounded-md text-sm">
-      {error}
-    </div>
-  )}    
-  <div>
-    <Input  name="username" as={Input} type="text" placeholder="Username" value={formData.username} onChange={handleChange} />
-    <ErrorMessage name="username" component="div" className="text-red-500 text-sm" />
-  </div>
-    <div>
-        <Input  name="email" as={Input} type="email" placeholder="email" value={formData.email} onChange={handleChange} />
-        <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
-        </div>    
-        <div>
-        <Input  name="password" as={Input} type="password" placeholder="Password" value={formData.password} onChange={handleChange} />
-        <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
-        </div>
-      
-          <Button type="submit" className="bg-blue-500 text-white p-2"disabled={loading}>
-            {loading ? "Loading..." : "Create Account"}
-          </Button>
-           {error && (
-          <p className="text-red-500 text-sm mt-2">{error}</p>
+          <Formik
+          initialValues={{ username: '', email: '', password: '' }}
+          validationSchema={validationSchema}
+          onSubmit={async (values, { setSubmitting,resetForm}) => {
+            try{
+              const result = await dispatch(registerUser(values)).unwrap();
+              console.log(result);
+            resetForm();
+            alert("Account created successfully");
+            router.push('/login');
+            } catch (error) {
+              console.error("Failed to create account:", error);
+              alert("Failed to create account");
+            }finally{
+              setSubmitting(false);
+            }
+            
+          }}
+        >
+        {({ isSubmitting }) => (
+          <Form className="flex flex-col gap-4 mt-4 w-80">
+            {error && (
+              <div className="text-red-500 bg-red-100 p-2 rounded-md text-sm">
+                {error}
+              </div>
+            )}
+
+            <div>
+              <Field
+                name="username"
+                as={Input}
+                placeholder="Username"
+                type="text"
+              />
+              <ErrorMessage
+                name="username"
+                component="div"
+                className="text-red-500 text-sm"
+              />
+            </div>
+
+            <div>
+              <Field
+                name="email"
+                as={Input}
+                placeholder="Email"
+                type="email"
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className="text-red-500 text-sm"
+              />
+            </div>
+
+            <div>
+              <Field
+                name="password"
+                as={Input}
+                placeholder="Password"
+                type="password"
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className="text-red-500 text-sm"
+              />
+            </div>
+
+            <Button
+              type="submit"
+              className="bg-blue-500 text-white p-2"
+              disabled={isSubmitting || loading}
+            >
+              {loading ? 'Loading...' : 'Create Account'}
+            </Button>
+          </Form>
         )}
-        </form>
+      </Formik>
          </main>
     );
 }
