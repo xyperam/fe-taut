@@ -22,7 +22,12 @@ export default function Sidebar(){
             <DropdownMenuContent className="w-64 bg-amber-50">
                 <DropdownMenuItem>Profile</DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem
+                onClick={() => {
+                    localStorage.removeItem("token");
+                    window.location.href = "/login";
+                }}
+                >Logout</DropdownMenuItem>
             </DropdownMenuContent>
             </DropdownMenu>
             <nav className="flex flex-col gap-2">

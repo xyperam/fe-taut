@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useRouter as userRouter } from 'next/navigation';
@@ -10,18 +10,23 @@ import { loginUser } from '@/redux/slice/auth.slice';
 export default function Dashboardpage() {
     const router = userRouter();
     const token = useSelector((state: RootState) => state.global.authLogin.token);
-
+    const [loading,setLoading] = useState(true);
     
     useEffect(()=>{
-        if (!token){
-            //cek local storage
+        const checkAuth = ()=>{
             const storedToken = localStorage.getItem('token');
-            if (!storedToken){
-                router.push("/login");
+            if(!storedToken){
+                router.replace('/login');
+            }else{
+                setLoading(false);
             }
-        }
-    },[token, router]);
+        };
+        checkAuth();
+    },[token,router]);
 
+    if(loading){
+        return <div>Loading...</div>;
+    }
     return (
         <div>
             cuman bisa diakses kalau lo udah login
