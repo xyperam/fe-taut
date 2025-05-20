@@ -32,9 +32,8 @@ export default function Loginpage(){
         onSubmit={async (values,{setSubmitting,resetForm})=>{
           try{
             const result = await dispatch(loginUser(values)).unwrap();
-            console.log(result);
+          
             localStorage.setItem('token', result.token); 
-console.log(result.token);
             router.push('/dashboard');
           }catch(error){
             console.log(error);
