@@ -1,38 +1,29 @@
-'use client";';
+"use client";
 import React, { useEffect } from "react";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/ui/drawer";
+
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { getProfile } from "@/redux/slice/profile.slice";
-import { CircleEllipsis, Ellipsis, Pencil, Plus } from "lucide-react";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import EditProfileDrawer from "./editProfileDrawer";
-import SocmedPickerDrawer from "./socmedPickDrawer";
 
-export default function ProfileCard() {
-  const dispatch = useDispatch<AppDispatch>();
-  const { profile, loading, error } = useSelector(
-    (state: RootState) => state.profile
-  );
-  const [open, setOpen] = React.useState(false);
-  const [openEdit, setOpenEdit] = React.useState(false);
-  const [socmedPickerOpen, setSocmedPickerOpen] = React.useState(false);
-  const handleSubmitEdit = (data: { username: string; bio: string }) => {
-    console.log(data);
-    setOpenEdit(false);
+import { Ellipsis, Plus } from "lucide-react";
+
+interface ProfileCardProps {
+  profile: {
+    displayname: string;
+    bio: string;
+    profilePicture?: string;
   };
-  useEffect(() => {
-    dispatch(getProfile());
-  }, [dispatch]);
+  onEditClick: () => void;
+  onSocmedClick: () => void;
+  onSettingsClick: () => void;
+}
 
+export default function ProfileCard({
+  profile,
+  onEditClick,
+  onSocmedClick,
+  onSettingsClick,
+}: ProfileCardProps) {
   return (
     <div className="  flex flex-row justify-between items-center w-full">
       <div className="flex gap-2 items-center ">
@@ -53,7 +44,7 @@ export default function ProfileCard() {
             <Button
               variant="default"
               className="rounded-full w-5 h-5 p-0"
-              onClick={() => setSocmedPickerOpen(true)}
+              onClick={onSocmedClick}
             >
               <Plus className="w-3 h-3" />
             </Button>
@@ -64,36 +55,10 @@ export default function ProfileCard() {
         variant="outline"
         size="lg"
         className="rounded-full w-10 h-10 p-0 mr-2"
-        onClick={() => setOpen(true)}
+        onClick={onSettingsClick}
       >
-        <SocmedPickerDrawer
-          open={socmedPickerOpen}
-          onOpenChange={setSocmedPickerOpen}
-        />
         <Ellipsis className="w-10 h-10" />
       </Button>
-      <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerContent className="h-[30vh]">
-          <DrawerHeader>
-            <VisuallyHidden>
-              <DrawerTitle>Pengaturan</DrawerTitle>
-            </VisuallyHidden>
-          </DrawerHeader>
-          {/* Konten drawer di sini */}
-          <div className="p-4">Edit Foto Profil</div>
-
-          <div className="p-4" onClick={() => setOpenEdit(true)}>
-            Edit Tampilan Nama and Bio
-          </div>
-        </DrawerContent>
-      </Drawer>
-      <EditProfileDrawer
-        open={openEdit}
-        onOpenChange={setOpenEdit}
-        username={profile.displayname || ""}
-        bio={profile.bio || ""}
-        onSubmit={handleSubmitEdit}
-      />
     </div>
   );
 }

@@ -7,12 +7,25 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "@/redux/slice/auth.slice";
 import ProfileCard from "@/components/core/profileCard";
 import { Button } from "@/components/ui/button";
+import { useProfileCardLogic } from "@/hooks/useProfileCardLogic";
+import SettingsDrawer from "@/components/core/settingsProfileDrawer";
+import EditProfileDrawer from "@/components/core/editProfileDrawer";
+import SocmedPickerDrawer from "@/components/core/socmedPickDrawer";
 
 export default function Dashboardpage() {
   const router = userRouter();
   const token = useSelector((state: RootState) => state.global.authLogin.token);
   const [loading, setLoading] = useState(true);
-
+  const {
+    profile,
+    isSettingOpen,
+    setIsSettingOpen,
+    isEditOpen,
+    setIsEditOpen,
+    isSocmedOpen,
+    setIsSocmedOpen,
+    handleSubmitEdit,
+  } = useProfileCardLogic();
   useEffect(() => {
     const checkAuth = () => {
       const storedToken = localStorage.getItem("token");
@@ -34,18 +47,38 @@ export default function Dashboardpage() {
       <section className="flex-1 flex justify-center bg-blue-950 ">
         <div className="p-2 border border-amber-950 w-full max-w-md">
           <div className="bg-white w-full flex flex-col items-center">
-            <ProfileCard />
+            <ProfileCard
+              profile={profile}
+              onEditClick={() => setIsEditOpen(true)}
+              onSocmedClick={() => setIsSocmedOpen(true)}
+              onSettingsClick={() => setIsSettingOpen(true)}
+            />
           </div>
           <Button className="w-full h-10 mt-3 mb-3">Tambahkan Link</Button>
+          <EditProfileDrawer
+            open={isEditOpen}
+            onOpenChange={setIsEditOpen}
+            username={profile.displayname || ""}
+            bio={profile.bio || ""}
+            onSubmit={handleSubmitEdit}
+          />
+
+          <SocmedPickerDrawer
+            open={isSocmedOpen}
+            onOpenChange={setIsSocmedOpen}
+          />
+
+          {/* Drawer pengaturan (opsional) */}
+          <SettingsDrawer
+            open={isSettingOpen}
+            onOpenChange={setIsSettingOpen}
+            onEditClick={() => {
+              setIsEditOpen(true);
+              setIsSettingOpen(false);
+            }}
+          />
         </div>
       </section>
-      {/* <section className=" hidden flex-1 flex-col items-center mt-4 ">
-            <div className='w-1/2 bg-amber-200'>
-            <h2 className="text-xl font-bold">Your Profile</h2>
-            <p className="text-lg">Username: {token}</p>
-            <p className="text-lg">Email: {token}</p>
-            </div>
-        </section> */}
     </main>
   );
 }
