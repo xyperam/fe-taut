@@ -14,9 +14,7 @@ import { useEffect } from "react";
 import { getProfile } from "@/redux/slice/profile.slice";
 export default function Sidebar() {
   const dispatch = useDispatch<AppDispatch>();
-  const { profile, loading, error } = useSelector(
-    (state: RootState) => state.profile
-  );
+  const { profile } = useSelector((state: RootState) => state.profile);
 
   useEffect(() => {
     dispatch(getProfile());

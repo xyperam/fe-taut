@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import api from "@/lib/axios_utils";
+import { profile } from "console";
 export const getProfile = createAsyncThunk(
   "profile/getProfile",
   async (_, { rejectWithValue }) => {
@@ -10,8 +11,51 @@ export const getProfile = createAsyncThunk(
       return {
         displayname: data.display_name,
         bio: data.bio,
-        profilePicture: data.profil_picture,
+        profilePicture: data.profile_picture,
       };
+    } catch (err) {
+      const error = err as AxiosError<{ error: string }>;
+      if (error.response && error.response.data?.error) {
+        return rejectWithValue(error.response?.data.error);
+      }
+      return rejectWithValue("Unknown error");
+    }
+  }
+);
+
+export const updateProfile = createAsyncThunk(
+  "profile/updateProfile",
+  async (
+    { displayname, bio }: { displayname: string; bio: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await api.put("/profile/edit", {
+        display_name: displayname,
+        bio,
+      });
+      return response.data;
+    } catch (err) {
+      const error = err as AxiosError<{ error: string }>;
+      if (error.response && error.response.data?.error) {
+        return rejectWithValue(error.response?.data.error);
+      }
+      return rejectWithValue("Unknown error");
+    }
+  }
+);
+
+export const updateProfilePicture = createAsyncThunk(
+  "profile/updateProfilePicture",
+  async (
+    { profilePicture }: { profilePicture: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await api.put("/api/profile", {
+        profile_picture: profilePicture,
+      });
+      return response.data;
     } catch (err) {
       const error = err as AxiosError<{ error: string }>;
       if (error.response && error.response.data?.error) {
@@ -31,6 +75,7 @@ interface ProfileState {
   loading: boolean;
   error: string | null;
   success: boolean;
+  isFetched: boolean;
 }
 
 const initialState: ProfileState = {
@@ -42,6 +87,7 @@ const initialState: ProfileState = {
   loading: false,
   error: null,
   success: false,
+  isFetched: false,
 };
 
 export const profileSlice = createSlice({
@@ -63,8 +109,41 @@ export const profileSlice = createSlice({
         state.loading = false;
         state.profile = action.payload;
         state.success = true;
+        state.isFetched = true;
       })
       .addCase(getProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.success = false;
+      })
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.profile.displayname = action.payload.display_name;
+        state.profile.bio = action.payload.bio;
+        state.success = true;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.success = false;
+      })
+      .addCase(updateProfilePicture.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(updateProfilePicture.fulfilled, (state, action) => {
+        state.loading = false;
+        state.profile.profilePicture =
+          action.payload?.profile_picture || state.profile.profilePicture;
+        state.success = true;
+      })
+      .addCase(updateProfilePicture.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
         state.success = false;

@@ -20,7 +20,7 @@ interface ProfileCardProps {
 
 export default function ProfileCard({
   profile,
-  onEditClick,
+
   onSocmedClick,
   onSettingsClick,
 }: ProfileCardProps) {

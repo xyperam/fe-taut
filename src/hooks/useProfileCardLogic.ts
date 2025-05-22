@@ -1,26 +1,34 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfile } from "@/redux/slice/profile.slice";
+import { getProfile, updateProfile } from "@/redux/slice/profile.slice";
 
 import type { AppDispatch, RootState } from "@/redux/store";
-
 export function useProfileCardLogic() {
   const dispatch = useDispatch<AppDispatch>();
-  const { profile, loading, error } = useSelector(
+  const { profile, loading, error, isFetched } = useSelector(
     (state: RootState) => state.profile
   );
-
+  useEffect(() => {
+    if (!isFetched) {
+      console.log("[useProfileCardLogic] Fetching profile...");
+      dispatch(getProfile());
+    }
+  }, [dispatch, isFetched]);
   const [isSettingOpen, setIsSettingOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isSocmedOpen, setIsSocmedOpen] = useState(false);
-
-  useEffect(() => {
-    dispatch(getProfile());
-  }, [dispatch]);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [showCropper, setShowCropper] = useState(false);
   const handleSubmitEdit = (data: { username: string; bio: string }) => {
-    console.log(data);
+    dispatch(
+      updateProfile({
+        displayname: data.username,
+        bio: data.bio,
+      })
+    );
     setIsEditOpen(false);
   };
+
   return {
     profile,
     loading,
@@ -32,5 +40,9 @@ export function useProfileCardLogic() {
     isSocmedOpen,
     setIsSocmedOpen,
     handleSubmitEdit,
+    drawerOpen,
+    setDrawerOpen,
+    showCropper,
+    setShowCropper,
   };
 }

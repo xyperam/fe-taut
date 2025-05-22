@@ -1,21 +1,22 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import { useRouter as userRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { loginUser } from "@/redux/slice/auth.slice";
+
 import ProfileCard from "@/components/core/profileCard";
 import { Button } from "@/components/ui/button";
 import { useProfileCardLogic } from "@/hooks/useProfileCardLogic";
 import SettingsDrawer from "@/components/core/settingsProfileDrawer";
 import EditProfileDrawer from "@/components/core/editProfileDrawer";
 import SocmedPickerDrawer from "@/components/core/socmedPickDrawer";
+import UploadAndCrop from "@/components/core/uploadAndCrop";
 
 export default function Dashboardpage() {
   const router = userRouter();
   const token = useSelector((state: RootState) => state.global.authLogin.token);
   const [loading, setLoading] = useState(true);
+
   const {
     profile,
     isSettingOpen,
@@ -25,7 +26,12 @@ export default function Dashboardpage() {
     isSocmedOpen,
     setIsSocmedOpen,
     handleSubmitEdit,
+    drawerOpen,
+    setDrawerOpen,
+    showCropper,
+    setShowCropper,
   } = useProfileCardLogic();
+
   useEffect(() => {
     const checkAuth = () => {
       const storedToken = localStorage.getItem("token");
@@ -62,12 +68,10 @@ export default function Dashboardpage() {
             bio={profile.bio || ""}
             onSubmit={handleSubmitEdit}
           />
-
           <SocmedPickerDrawer
             open={isSocmedOpen}
             onOpenChange={setIsSocmedOpen}
           />
-
           {/* Drawer pengaturan (opsional) */}
           <SettingsDrawer
             open={isSettingOpen}
@@ -76,7 +80,20 @@ export default function Dashboardpage() {
               setIsEditOpen(true);
               setIsSettingOpen(false);
             }}
+            onEditPhotoClick={() => {
+              setIsSettingOpen(false);
+              setShowCropper(true);
+            }}
           />
+
+          {showCropper && (
+            <div className="mt-4">
+              <UploadAndCrop />
+              <Button onClick={() => setShowCropper(false)} className="mt-2">
+                Selesai
+              </Button>
+            </div>
+          )}
         </div>
       </section>
     </main>
