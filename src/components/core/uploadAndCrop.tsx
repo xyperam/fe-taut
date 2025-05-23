@@ -6,6 +6,13 @@ import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
 import { getCroppedImg } from "@/lib/cropImage";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogHeader,
+} from "@/components/ui/dialog";
 
 type CroppedArea = {
   width: number;
@@ -14,20 +21,23 @@ type CroppedArea = {
   y: number;
 };
 
-export default function UploadAndCrop() {
+type Props = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onCropComplete: (image: Blob) => void;
+};
+
+export default function UploadAndCrop({
+  open,
+  onOpenChange,
+  onCropComplete,
+}: Props) {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] =
     useState<CroppedArea | null>(null);
-  const [croppedImage, setCroppedImage] = useState<string | null>(null);
-
-  const onCropComplete = useCallback(
-    (_: any, croppedAreaPixels: CroppedArea) => {
-      setCroppedAreaPixels(croppedAreaPixels);
-    },
-    []
-  );
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,56 +47,74 @@ export default function UploadAndCrop() {
     }
   };
 
-  const showCroppedImage = useCallback(async () => {
+  const handleCropComplete = useCallback((_: any, croppedArea: CroppedArea) => {
+    setCroppedAreaPixels(croppedArea);
+  }, []);
+
+  const handleCropAndSend = useCallback(async () => {
     if (!imageSrc || !croppedAreaPixels) return;
+    setLoading(true);
     try {
-      const croppedImg = await getCroppedImg(imageSrc, croppedAreaPixels);
-      setCroppedImage(croppedImg as string);
+      const croppedImg = (await getCroppedImg(
+        imageSrc,
+        croppedAreaPixels
+      )) as Blob;
+      onCropComplete(croppedImg);
+      // Optionally reset
+      setImageSrc(null);
     } catch (e) {
-      console.error(e);
+      console.error("Crop error:", e);
+    } finally {
+      setLoading(false);
     }
-  }, [imageSrc, croppedAreaPixels]);
+  }, [imageSrc, croppedAreaPixels, onCropComplete]);
 
   return (
-    <div className="space-y-4">
-      <Input type="file" accept="image/*" onChange={handleFileChange} />
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-[90vw] w-[400px]">
+        <DialogHeader>
+          <DialogTitle>Upload & Crop</DialogTitle>
+          <DialogDescription>
+            Select and crop your profile picture.
+          </DialogDescription>
+        </DialogHeader>
 
-      {imageSrc && (
-        <div className="relative w-[300px] h-[300px] bg-amber-200 rounded overflow-hidden">
-          <Cropper
-            image={imageSrc}
-            crop={crop}
-            zoom={zoom}
-            aspect={1}
-            onCropChange={setCrop}
-            onZoomChange={setZoom}
-            onCropComplete={onCropComplete}
-          />
-        </div>
-      )}
+        <Input type="file" accept="image/*" onChange={handleFileChange} />
 
-      {imageSrc && (
-        <div className="pt-2">
-          <Slider
-            min={1}
-            max={3}
-            step={0.1}
-            value={[zoom]}
-            onValueChange={(value) => setZoom(value[0])}
-          />
-          <Button onClick={showCroppedImage} className="mt-2">
-            Crop
-          </Button>
-        </div>
-      )}
+        {imageSrc && (
+          <>
+            <div className="relative w-full h-[300px] bg-gray-200 rounded mt-4 overflow-hidden">
+              <Cropper
+                image={imageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={handleCropComplete}
+              />
+            </div>
 
-      {croppedImage && (
-        <div className="mt-4">
-          <p className="font-medium mb-2">Hasil Crop:</p>
-          <img src={croppedImage} alt="Cropped" className="rounded border" />
-        </div>
-      )}
-    </div>
+            <Slider
+              min={1}
+              max={3}
+              step={0.1}
+              value={[zoom]}
+              onValueChange={(value) => setZoom(value[0])}
+              className="pt-4"
+            />
+
+            <Button
+              onClick={handleCropAndSend}
+              className="mt-4 w-full"
+              disabled={loading}
+            >
+              {loading ? "Cropping..." : "Crop"}
+            </Button>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }
 

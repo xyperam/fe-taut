@@ -47,14 +47,17 @@ export const updateProfile = createAsyncThunk(
 
 export const updateProfilePicture = createAsyncThunk(
   "profile/updateProfilePicture",
-  async (
-    { profilePicture }: { profilePicture: string },
-    { rejectWithValue }
-  ) => {
+  async ({ file }: { file: Blob }, { rejectWithValue }) => {
     try {
-      const response = await api.put("/api/profile", {
-        profile_picture: profilePicture,
+      const formData = new FormData();
+      formData.append("profile_picture", file); // pastikan nama ini cocok dengan backend
+
+      const response = await api.post("/profile/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+
       return response.data;
     } catch (err) {
       const error = err as AxiosError<{ error: string }>;

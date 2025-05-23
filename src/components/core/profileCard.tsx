@@ -14,14 +14,14 @@ interface ProfileCardProps {
     profilePicture?: string;
   };
   onEditClick: () => void;
-  onSocmedClick: () => void;
+  onSocmedPicker: () => void;
   onSettingsClick: () => void;
 }
 
 export default function ProfileCard({
   profile,
 
-  onSocmedClick,
+  onSocmedPicker,
   onSettingsClick,
 }: ProfileCardProps) {
   return (
@@ -44,7 +44,7 @@ export default function ProfileCard({
             <Button
               variant="default"
               className="rounded-full w-5 h-5 p-0"
-              onClick={onSocmedClick}
+              onClick={onSocmedPicker}
             >
               <Plus className="w-3 h-3" />
             </Button>

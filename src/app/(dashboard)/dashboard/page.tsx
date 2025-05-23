@@ -11,7 +11,9 @@ import SettingsDrawer from "@/components/core/settingsProfileDrawer";
 import EditProfileDrawer from "@/components/core/editProfileDrawer";
 import SocmedPickerDrawer from "@/components/core/socmedPickDrawer";
 import UploadAndCrop from "@/components/core/uploadAndCrop";
-
+import PreviewDialog from "@/components/core/previewDialog";
+import DialogSocmedPicker from "@/components/core/dialogSocmedPicker";
+import { useDialogSocmedPicker } from "@/hooks/useDialogSocmedPicker";
 export default function Dashboardpage() {
   const router = userRouter();
   const token = useSelector((state: RootState) => state.global.authLogin.token);
@@ -23,15 +25,18 @@ export default function Dashboardpage() {
     setIsSettingOpen,
     isEditOpen,
     setIsEditOpen,
-    isSocmedOpen,
-    setIsSocmedOpen,
     handleSubmitEdit,
-    drawerOpen,
-    setDrawerOpen,
     showCropper,
     setShowCropper,
+    previewOpen,
+    setPreviewOpen,
+    croppedImage,
+    handleCropComplete,
+    handleBackToCrop,
+    handleUploadPicture,
   } = useProfileCardLogic();
-
+  const { open, openDialog, closeDialog, handleOpenChange } =
+    useDialogSocmedPicker();
   useEffect(() => {
     const checkAuth = () => {
       const storedToken = localStorage.getItem("token");
@@ -56,7 +61,9 @@ export default function Dashboardpage() {
             <ProfileCard
               profile={profile}
               onEditClick={() => setIsEditOpen(true)}
-              onSocmedClick={() => setIsSocmedOpen(true)}
+              onSocmedPicker={() => {
+                openDialog();
+              }}
               onSettingsClick={() => setIsSettingOpen(true)}
             />
           </div>
@@ -68,11 +75,7 @@ export default function Dashboardpage() {
             bio={profile.bio || ""}
             onSubmit={handleSubmitEdit}
           />
-          <SocmedPickerDrawer
-            open={isSocmedOpen}
-            onOpenChange={setIsSocmedOpen}
-          />
-          {/* Drawer pengaturan (opsional) */}
+
           <SettingsDrawer
             open={isSettingOpen}
             onOpenChange={setIsSettingOpen}
@@ -88,12 +91,22 @@ export default function Dashboardpage() {
 
           {showCropper && (
             <div className="mt-4">
-              <UploadAndCrop />
-              <Button onClick={() => setShowCropper(false)} className="mt-2">
-                Selesai
-              </Button>
+              <UploadAndCrop
+                open={true}
+                onOpenChange={(open) => setShowCropper(open)}
+                onCropComplete={handleCropComplete}
+              />
             </div>
           )}
+          <PreviewDialog
+            open={previewOpen}
+            onOpenChange={setPreviewOpen}
+            image={croppedImage}
+            onBack={handleBackToCrop}
+            onUpload={handleUploadPicture}
+          />
+
+          <DialogSocmedPicker open={open} onClose={handleOpenChange} />
         </div>
       </section>
     </main>

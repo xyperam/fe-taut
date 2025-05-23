@@ -19,11 +19,13 @@ export const getCroppedImg = async (imageSrc: string, pixelCrop: any) => {
     pixelCrop.height
   );
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
-      if (!blob) return;
-      const fileUrl = URL.createObjectURL(blob);
-      resolve(fileUrl);
+      if (blob) {
+        resolve(blob); // ✅ Kirim blob langsung
+      } else {
+        reject(new Error("Canvas is empty"));
+      }
     }, "image/jpeg");
   });
 };
