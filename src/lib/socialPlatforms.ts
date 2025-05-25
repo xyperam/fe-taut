@@ -20,23 +20,85 @@ export type SocialPlatform = {
   icon: IconDefinition;
   baseUrl?: string;
   prefix?: string;
+  platform: string;
 };
 
-export const socialPlatforms: SocialPlatform[] = [
-  { name: "Instagram", icon: faInstagram, baseUrl: "https://instagram.com/" },
-  { name: "Facebook", icon: faFacebook, baseUrl: "https://facebook.com/" },
-  { name: "X", icon: faXTwitter, baseUrl: "https://x.com/" },
-  { name: "LinkedIn", icon: faLinkedin, baseUrl: "https://linkedin.com/in/" },
-  { name: "Github", icon: faGithub, baseUrl: "https://github.com/" },
-  { name: "Tiktok", icon: faTiktok, baseUrl: "https://www.tiktok.com/@" },
-  { name: "Youtube", icon: faYoutube, baseUrl: "https://youtube.com/" },
-  { name: "Snapchat", icon: faSnapchat, baseUrl: "https://snapchat.com/add/" },
-  { name: "Discord", icon: faDiscord, baseUrl: "https://discord.com/users/" },
-  { name: "Pinterest", icon: faPinterest, baseUrl: "https://pinterest.com/" },
-  { name: "Reddit", icon: faReddit, baseUrl: "https://reddit.com/user/" },
-  { name: "Threads", icon: faThreads, baseUrl: "https://www.threads.net/@" },
+export const socialPlatforms = [
+  {
+    name: "Instagram",
+    platform: "instagram",
+    icon: faInstagram,
+    baseUrl: "https://instagram.com/",
+  },
+  {
+    name: "Facebook",
+    platform: "facebook",
+    icon: faFacebook,
+    baseUrl: "https://facebook.com/",
+  },
+  {
+    name: "X",
+    platform: "x",
+    icon: faXTwitter,
+    baseUrl: "https://x.com/",
+  },
+  {
+    name: "LinkedIn",
+    platform: "linkedin",
+    icon: faLinkedin,
+    baseUrl: "https://linkedin.com/in/",
+  },
+  {
+    name: "Github",
+    platform: "github",
+    icon: faGithub,
+    baseUrl: "https://github.com/",
+  },
+  {
+    name: "Tiktok",
+    platform: "tiktok",
+    icon: faTiktok,
+    baseUrl: "https://www.tiktok.com/@",
+  },
+  {
+    name: "Youtube",
+    platform: "youtube",
+    icon: faYoutube,
+    baseUrl: "https://youtube.com/",
+  },
+  {
+    name: "Snapchat",
+    platform: "snapchat",
+    icon: faSnapchat,
+    baseUrl: "https://snapchat.com/add/",
+  },
+  {
+    name: "Discord",
+    platform: "discord",
+    icon: faDiscord,
+    baseUrl: "https://discord.com/users/",
+  },
+  {
+    name: "Pinterest",
+    platform: "pinterest",
+    icon: faPinterest,
+    baseUrl: "https://pinterest.com/",
+  },
+  {
+    name: "Reddit",
+    platform: "reddit",
+    icon: faReddit,
+    baseUrl: "https://reddit.com/user/",
+  },
+  {
+    name: "Threads",
+    platform: "threads",
+    icon: faThreads,
+    baseUrl: "https://www.threads.net/@",
+  },
   {
     name: "Spotify",
+    platform: "spotify",
     icon: faSpotify,
     baseUrl: "https://open.spotify.com/user/",
   },

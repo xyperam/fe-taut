@@ -8,16 +8,19 @@ import {
 
 import type { AppDispatch, RootState } from "@/redux/store";
 import { blob } from "stream/consumers";
+import { getLinks } from "@/redux/slice/link.slice";
 export function useProfileCardLogic() {
   const dispatch = useDispatch<AppDispatch>();
   const { profile, loading, error, isFetched } = useSelector(
     (state: RootState) => state.profile
   );
+
   useEffect(() => {
     if (!isFetched) {
       console.log("[useProfileCardLogic] Fetching profile...");
       dispatch(getProfile());
     }
+    dispatch(getLinks());
   }, [dispatch, isFetched]);
   const [isSettingOpen, setIsSettingOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -26,6 +29,10 @@ export function useProfileCardLogic() {
   const [showCropper, setShowCropper] = useState(false);
   const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
+
+  //icon socmed
+  const socialLinks = useSelector((state: RootState) => state.link.links);
+
   const handleSubmitEdit = (data: { username: string; bio: string }) => {
     dispatch(
       updateProfile({
@@ -78,5 +85,6 @@ export function useProfileCardLogic() {
     handleCropComplete,
     handleBackToCrop,
     handleUploadPicture,
+    socialLinks,
   };
 }

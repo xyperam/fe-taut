@@ -5,17 +5,19 @@ import {
   DialogTitle,
   DialogHeader,
 } from "@/components/ui/dialog";
-import { socialPlatforms } from "@/lib/socialPlatforms";
+import { SocialPlatform, socialPlatforms } from "@/lib/socialPlatforms";
 import * as Icons from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 type DialogSocmedPickerProps = {
   open: boolean;
   onClose: (open: boolean) => void;
+  onSelect: (platform: SocialPlatform) => void;
 };
 
 export default function DialogSocmedPicker({
   open,
   onClose,
+  onSelect,
 }: DialogSocmedPickerProps) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -28,8 +30,9 @@ export default function DialogSocmedPicker({
           {socialPlatforms.map((platform) => {
             return (
               <div
+                onClick={() => onSelect(platform)}
                 key={platform.name}
-                className="flex items-center justify-between p-2 border-b border-gray-200"
+                className="flex items-center justify-between p-2 border-b border-gray-200 cursor-pointer"
               >
                 <div className="flex items-center">
                   <FontAwesomeIcon

@@ -4,8 +4,11 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Ellipsis, Plus } from "lucide-react";
+import { socialPlatforms } from "@/lib/socialPlatforms";
+
+import { LinkItem } from "@/redux/slice/link.slice"; // Import LinkItem type
 
 interface ProfileCardProps {
   profile: {
@@ -13,6 +16,7 @@ interface ProfileCardProps {
     bio: string;
     profilePicture?: string;
   };
+  socialLinks: LinkItem[];
   onEditClick: () => void;
   onSocmedPicker: () => void;
   onSettingsClick: () => void;
@@ -20,7 +24,7 @@ interface ProfileCardProps {
 
 export default function ProfileCard({
   profile,
-
+  socialLinks,
   onSocmedPicker,
   onSettingsClick,
 }: ProfileCardProps) {
@@ -40,7 +44,28 @@ export default function ProfileCard({
             <h1 className="text-lg">{profile.displayname}</h1>
             <p className="text-sm">{profile.bio}</p>
           </div>
-          <div className="p-1">
+          <div className="p-1 flex items-center gap-2">
+            {/* Render semua icon sosial media aktif */}
+            {socialLinks
+              .filter((link) => link.active)
+              .map((link, idx) => {
+                const platform = socialPlatforms.find(
+                  (p) =>
+                    p.platform.toLowerCase() === link.platform?.toLowerCase()
+                );
+                if (!platform) return null;
+                return (
+                  <a
+                    key={idx}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-primary"
+                  >
+                    <FontAwesomeIcon icon={platform.icon} className="w-4 h-4" />
+                  </a>
+                );
+              })}
             <Button
               variant="default"
               className="rounded-full w-5 h-5 p-0"

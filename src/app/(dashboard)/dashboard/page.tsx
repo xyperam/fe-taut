@@ -14,6 +14,9 @@ import UploadAndCrop from "@/components/core/uploadAndCrop";
 import PreviewDialog from "@/components/core/previewDialog";
 import DialogSocmedPicker from "@/components/core/dialogSocmedPicker";
 import { useDialogSocmedPicker } from "@/hooks/useDialogSocmedPicker";
+import { platform } from "os";
+import DialogSocmedInput from "@/components/core/dialogSocmedInput";
+import { setIn } from "formik";
 export default function Dashboardpage() {
   const router = userRouter();
   const token = useSelector((state: RootState) => state.global.authLogin.token);
@@ -34,9 +37,22 @@ export default function Dashboardpage() {
     handleCropComplete,
     handleBackToCrop,
     handleUploadPicture,
+    socialLinks,
   } = useProfileCardLogic();
-  const { open, openDialog, closeDialog, handleOpenChange } =
-    useDialogSocmedPicker();
+  const {
+    open,
+    openDialog,
+    closeDialog,
+    handleOpenChange,
+    selectedPlatform,
+    setSelectedPlatform,
+    inputDialogOpen,
+    setInputDialogOpen,
+    socialLink,
+    setSocialLink,
+    handleBackToSelectPlatform,
+    handleInputLink,
+  } = useDialogSocmedPicker();
   useEffect(() => {
     const checkAuth = () => {
       const storedToken = localStorage.getItem("token");
@@ -65,6 +81,9 @@ export default function Dashboardpage() {
                 openDialog();
               }}
               onSettingsClick={() => setIsSettingOpen(true)}
+              socialLinks={socialLinks.filter(
+                (link) => link.type === "social_media"
+              )}
             />
           </div>
           <Button className="w-full h-10 mt-3 mb-3">Tambahkan Link</Button>
@@ -106,7 +125,25 @@ export default function Dashboardpage() {
             onUpload={handleUploadPicture}
           />
 
-          <DialogSocmedPicker open={open} onClose={handleOpenChange} />
+          <DialogSocmedPicker
+            open={open}
+            onClose={handleOpenChange}
+            onSelect={(platform) => {
+              setSelectedPlatform(platform);
+              setInputDialogOpen(true);
+              closeDialog();
+            }}
+          />
+
+          <DialogSocmedInput
+            open={inputDialogOpen}
+            onChange={setSocialLink}
+            onClose={setInputDialogOpen}
+            platform={selectedPlatform}
+            value={socialLink}
+            onBack={handleBackToSelectPlatform}
+            onSubmit={handleInputLink}
+          />
         </div>
       </section>
     </main>
