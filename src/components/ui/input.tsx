@@ -1,6 +1,6 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
@@ -14,20 +14,30 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
         ref={ref}
         {...props}
       />
-    )
+    );
   }
-)
-Input.displayName = "Input"
-const InputWithPrefix = ({ prefix, ...props }: { prefix: string } & React.ComponentProps<"input">) => {
+);
+Input.displayName = "Input";
+const InputWithPrefix = ({
+  prefix,
+  ...props
+}: { prefix: string } & React.ComponentProps<"input">) => {
   return (
-    <div className="relative w-full">
-      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-black font-bold">
+    <div className="flex items-center w-full h-9 border border-input rounded-md shadow-sm overflow-hidden">
+      <span className="px-1 font-medium text-foreground whitespace-nowrap">
         {prefix}
       </span>
-      <Input {...props} className={cn("pl-[85px]", props.className)} />
+      <input
+        {...props}
+        className={cn(
+          "flex-1 h-full bg-transparent py-1 text-base focus:outline-none placeholder:text-muted-foreground md:text-sm",
+          props.className
+        )}
+      />
     </div>
   );
 };
-InputWithPrefix.displayName = "InputWithPrefix"
 
-export { Input, InputWithPrefix }
+InputWithPrefix.displayName = "InputWithPrefix";
+
+export { Input, InputWithPrefix };

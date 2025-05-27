@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import { useRouter as userRouter } from "next/navigation";
 
 import ProfileCard from "@/components/core/profileCard";
@@ -9,14 +9,16 @@ import { Button } from "@/components/ui/button";
 import { useProfileCardLogic } from "@/hooks/useProfileCardLogic";
 import SettingsDrawer from "@/components/core/settingsProfileDrawer";
 import EditProfileDrawer from "@/components/core/editProfileDrawer";
-import SocmedPickerDrawer from "@/components/core/socmedPickDrawer";
+
 import UploadAndCrop from "@/components/core/uploadAndCrop";
 import PreviewDialog from "@/components/core/previewDialog";
 import DialogSocmedPicker from "@/components/core/dialogSocmedPicker";
 import { useDialogSocmedPicker } from "@/hooks/useDialogSocmedPicker";
-import { platform } from "os";
+
 import DialogSocmedInput from "@/components/core/dialogSocmedInput";
-import { setIn } from "formik";
+import { socialPlatforms } from "@/lib/socialPlatforms";
+import DialogSocmedEdit from "@/components/core/dialogSocmedEditLink";
+
 export default function Dashboardpage() {
   const router = userRouter();
   const token = useSelector((state: RootState) => state.global.authLogin.token);
@@ -52,6 +54,11 @@ export default function Dashboardpage() {
     setSocialLink,
     handleBackToSelectPlatform,
     handleInputLink,
+    openEditDialog,
+    isEditMode,
+    setIsEditMode,
+    setEditingLinkId,
+    handleDeleteLink,
   } = useDialogSocmedPicker();
   useEffect(() => {
     const checkAuth = () => {
@@ -70,10 +77,10 @@ export default function Dashboardpage() {
   }
 
   return (
-    <main className="flex flex-row min-h-screen  p-1 bg-gray-50 overflow-x-hidden">
-      <section className="flex-1 flex justify-center bg-blue-950 ">
+    <main className="flex flex-row min-h-screen bg-blue-950 not-only:overflow-x-hidden">
+      <section className="flex-1 flex justify-center bg-blue-950 mt-4">
         <div className="p-2 border border-amber-950 w-full max-w-md">
-          <div className="bg-white w-full flex flex-col items-center">
+          <div className="bg-white flex flex-col items-center mx-auto w-full max-w-md">
             <ProfileCard
               profile={profile}
               onEditClick={() => setIsEditOpen(true)}
@@ -84,6 +91,15 @@ export default function Dashboardpage() {
               socialLinks={socialLinks.filter(
                 (link) => link.type === "social_media"
               )}
+              onEditLinkClick={(link) => {
+                const platform = socialPlatforms.find(
+                  (p) =>
+                    p.platform.toLowerCase() === link.platform?.toLowerCase()
+                );
+                if (!platform) return;
+
+                openEditDialog(platform, link.url, link.id);
+              }}
             />
           </div>
           <Button className="w-full h-10 mt-3 mb-3">Tambahkan Link</Button>
@@ -132,6 +148,8 @@ export default function Dashboardpage() {
               setSelectedPlatform(platform);
               setInputDialogOpen(true);
               closeDialog();
+              setIsEditMode(false);
+              setEditingLinkId(null);
             }}
           />
 
@@ -143,6 +161,16 @@ export default function Dashboardpage() {
             value={socialLink}
             onBack={handleBackToSelectPlatform}
             onSubmit={handleInputLink}
+          />
+          <DialogSocmedEdit
+            open={inputDialogOpen && isEditMode}
+            onClose={setInputDialogOpen}
+            platform={selectedPlatform}
+            value={socialLink}
+            onChange={setSocialLink}
+            onBack={handleBackToSelectPlatform}
+            onSubmit={handleInputLink}
+            onDelete={handleDeleteLink}
           />
         </div>
       </section>

@@ -1,31 +1,34 @@
-'use client';
-import Sidebar from '@/components/layout/sidebar';
-import BottomNav from '@/components/layout/bottomNav';
-import { useRouter } from 'next/navigation';
-import React,{useEffect,useState} from 'react';
+"use client";
+import Sidebar from "@/components/layout/sidebar";
+import BottomNav from "@/components/layout/bottomNav";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
-  const [isAuthenticated,setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if(!token){
-        router.replace('/login');
-    }else{
-        setIsAuthenticated(true);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/login");
+    } else {
+      setIsAuthenticated(true);
     }
-    }
-    , [router]);
+  }, [router]);
 
-    if(!isAuthenticated){
-        return null;
-    }
+  if (!isAuthenticated) {
+    return null;
+  }
 
-    return (
+  return (
     <div className="flex min-h-screen">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <main className="flex-1 p-4">{children}</main>
+        <main className="flex-1">{children}</main>
         <BottomNav />
       </div>
     </div>

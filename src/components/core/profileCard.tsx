@@ -20,6 +20,7 @@ interface ProfileCardProps {
   onEditClick: () => void;
   onSocmedPicker: () => void;
   onSettingsClick: () => void;
+  onEditLinkClick: (link: LinkItem) => void;
 }
 
 export default function ProfileCard({
@@ -27,6 +28,7 @@ export default function ProfileCard({
   socialLinks,
   onSocmedPicker,
   onSettingsClick,
+  onEditLinkClick,
 }: ProfileCardProps) {
   return (
     <div className="  flex flex-row justify-between items-center w-full">
@@ -57,8 +59,9 @@ export default function ProfileCard({
                 return (
                   <a
                     key={idx}
-                    href={link.url}
-                    target="_blank"
+                    onClick={(e) => {
+                      onEditLinkClick(link);
+                    }}
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary"
                   >

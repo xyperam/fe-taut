@@ -39,12 +39,52 @@ export const getLinks = createAsyncThunk(
     }
   }
 );
+type EditLinkPayload = {
+  id: number;
+  title: string;
+  platform: string;
+  url: string;
+  active: boolean;
+  type: string;
+};
+
+export const editLink = createAsyncThunk<LinkItem, EditLinkPayload>(
+  "profile/editLink",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.put("profile/link", data);
+      return response.data.link;
+    } catch (err) {
+      const error = err as AxiosError<{ error: string }>;
+      if (error.response && error.response.data?.error) {
+        return rejectWithValue(error.response.data.error);
+      }
+      return rejectWithValue("Unknown Error");
+    }
+  }
+);
+
+export const deleteLink = createAsyncThunk<number, number>(
+  "profile/deleteLink",
+  async (id, { rejectWithValue }) => {
+    try {
+      await api.delete(`profile/link/${id}`);
+      return id;
+    } catch (err) {
+      const error = err as AxiosError<{ error: string }>;
+      if (error.response?.data?.error) {
+        return rejectWithValue(error.response.data.error);
+      }
+      return rejectWithValue("Unknown Error");
+    }
+  }
+);
 
 export interface LinkItem {
   id: number;
   title: string;
   url: string;
-  order: number;
+  order?: number;
   active: boolean;
   platform: string;
   type?: string;
@@ -103,6 +143,43 @@ export const linkSlice = createSlice({
         state.success = false;
       })
       .addCase(getLinks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.success = false;
+      })
+      .addCase(editLink.pending, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(editLink.fulfilled, (state, action) => {
+        state.loading = false;
+        const updatedLink = action.payload as LinkItem;
+        const index = state.links.findIndex(
+          (link) => link.id === updatedLink.id
+        );
+        if (index !== -1) {
+          state.links[index] = updatedLink;
+        }
+
+        state.success = false;
+      })
+      .addCase(editLink.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.success = false;
+      })
+      .addCase(deleteLink.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(deleteLink.fulfilled, (state, action) => {
+        state.loading = false;
+        state.links = state.links.filter((link) => link.id !== action.payload);
+        state.success = true;
+      })
+      .addCase(deleteLink.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
         state.success = false;

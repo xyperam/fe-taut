@@ -3,16 +3,13 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogOverlay,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-import { Input, InputWithPrefix } from "@/components/ui/input";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { InputWithPrefix } from "@/components/ui/input";
 import { SocialPlatform } from "@/lib/socialPlatforms";
-import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ChevronLeft } from "lucide-react";
-
+import { Button } from "@/components/ui/button";
 type Props = {
   open: boolean;
   onClose: (open: boolean) => void;
@@ -21,9 +18,10 @@ type Props = {
   onChange: (value: string) => void;
   onBack?: () => void;
   onSubmit: () => void;
+  onDelete: () => void;
 };
 
-export default function DialogSocmedInput({
+export default function DialogSocmedEdit({
   open,
   onClose,
   platform,
@@ -31,26 +29,19 @@ export default function DialogSocmedInput({
   onChange,
   onBack = () => {},
   onSubmit,
+  onDelete,
 }: Props) {
   if (!platform) return null;
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
-        {/* Tombol back terpisah */}
-        <button
-          onClick={onBack}
-          className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-2 left-1 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-        >
-          <ChevronLeft className="" />
-        </button>
         <DialogHeader>
           <DialogTitle>
             <FontAwesomeIcon icon={platform.icon} className="mr-2" />
-            Add your {platform.name}
+            Edit Link {platform.name}
           </DialogTitle>
         </DialogHeader>
-
         <InputWithPrefix
           prefix={`${platform.baseUrl}`}
           type="text"
@@ -58,10 +49,19 @@ export default function DialogSocmedInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />
-
-        <div className="flex flex-row gap-2 mt-4">
-          <Button className="flex-1" onClick={onSubmit}>
-            Add
+        <div className="flex flex-col gap-2 mt-4">
+          <Button
+            className="flex-1 bg-sky-400 hover:bg-sky-600 text-white "
+            onClick={onSubmit}
+          >
+            Simpan
+          </Button>
+          <Button
+            className="flex-1 bg-gray-300 hover:bg-red-200 text-black "
+            onClick={onDelete}
+          >
+            <FontAwesomeIcon icon={faTrash} style={{ color: "black" }} />
+            Hapus Icon
           </Button>
         </div>
       </DialogContent>
