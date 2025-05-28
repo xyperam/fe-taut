@@ -20,6 +20,7 @@ import { socialPlatforms } from "@/lib/socialPlatforms";
 import DialogSocmedEdit from "@/components/dashboard/SocmedLinkManager/dialogSocmedEditLink";
 import { useLinkState } from "@/hooks/useDialogLink";
 import DialogInputLink from "@/components/dashboard/WebsiteLinkManager/dialogInputLink";
+import SortableCardList from "@/components/dashboard/WebsiteLinkManager/sortableCardList";
 
 export default function Dashboardpage() {
   const router = userRouter();
@@ -89,9 +90,9 @@ export default function Dashboardpage() {
   }
 
   return (
-    <main className="flex flex-row min-h-screen bg-white not-only:overflow-x-hidden">
-      <section className="flex-1 flex justify-center bg-[#FBFBFB] mt-4">
-        <div className="p-2 border border-amber-950 w-full max-w-md">
+    <main className=" w-full bg-white overflow-y-auto ">
+      <section className="flex-1 flex justify-center overflow-y-auto bg-[#FBFBFB] mt-4 w-full pb-24">
+        <div className="w-full max-w-md space-y-4 p-4">
           <div className="bg-[#E8F9FF] flex flex-col items-center mx-auto w-full max-w-md">
             <ProfileCard
               profile={profile}
@@ -196,6 +197,7 @@ export default function Dashboardpage() {
             onSubmit={handleInputLink}
             onDelete={handleDeleteLink}
           />
+          <SortableCardList />
         </div>
       </section>
     </main>

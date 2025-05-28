@@ -25,11 +25,13 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <main className="flex-1">{children}</main>
-        <BottomNav />
+    <div className="flex flex-col h-screen overflow-hidden">
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <main className="flex-1 overflow-y-auto">{children}</main>
+          <BottomNav />
+        </div>
       </div>
     </div>
   );
