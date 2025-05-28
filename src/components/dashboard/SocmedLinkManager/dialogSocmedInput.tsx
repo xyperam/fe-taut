@@ -21,6 +21,7 @@ type Props = {
   onChange: (value: string) => void;
   onBack?: () => void;
   onSubmit: () => void;
+  error?: string | null;
 };
 
 export default function DialogSocmedInput({
@@ -31,6 +32,7 @@ export default function DialogSocmedInput({
   onChange,
   onBack = () => {},
   onSubmit,
+  error,
 }: Props) {
   if (!platform) return null;
 
@@ -47,7 +49,7 @@ export default function DialogSocmedInput({
         <DialogHeader>
           <DialogTitle>
             <FontAwesomeIcon icon={platform.icon} className="mr-2" />
-            Add your {platform.name}
+            Tambahkan link {platform.name}
           </DialogTitle>
         </DialogHeader>
 
@@ -58,7 +60,7 @@ export default function DialogSocmedInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />
-
+        {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
         <div className="flex flex-row gap-2 mt-4">
           <Button className="flex-1" onClick={onSubmit}>
             Add

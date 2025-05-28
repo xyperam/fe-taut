@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Ellipsis, Plus } from "lucide-react";
 import { socialPlatforms } from "@/lib/socialPlatforms";
-
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { LinkItem } from "@/redux/slice/link.slice"; // Import LinkItem type
 
 interface ProfileCardProps {
@@ -69,23 +69,21 @@ export default function ProfileCard({
                   </a>
                 );
               })}
-            <Button
-              variant="default"
-              className="rounded-full w-5 h-5 p-0"
+            <FontAwesomeIcon
+              icon={faCirclePlus}
               onClick={onSocmedPicker}
-            >
-              <Plus className="w-3 h-3" />
-            </Button>
+              className="text-muted-foreground hover:text-primary"
+            />
           </div>
         </div>
       </div>
       <Button
         variant="outline"
         size="lg"
-        className="rounded-full w-10 h-10 p-0 mr-2"
+        className="rounded-full w-10 h-10 p-0 mr-2 text-muted-foreground hover:text-primary"
         onClick={onSettingsClick}
       >
-        <Ellipsis className="w-10 h-10" />
+        <Ellipsis className="w-10 h-10 " />
       </Button>
     </div>
   );

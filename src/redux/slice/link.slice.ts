@@ -5,7 +5,13 @@ import api from "@/lib/axios_utils";
 export const addLink = createAsyncThunk(
   "profile/addLink",
   async (
-    userData: { title: string; url: string; active: boolean },
+    userData: {
+      title: string;
+      url: string;
+      active: boolean;
+      platform: string;
+      type: string;
+    },
     { rejectWithValue }
   ) => {
     try {

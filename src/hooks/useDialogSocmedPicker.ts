@@ -22,7 +22,7 @@ export function useDialogSocmedPicker() {
   const [socialLink, setSocialLink] = useState("");
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingLinkId, setEditingLinkId] = useState<number | null>(null);
-
+  const [inputError, setInputError] = useState<string | null>(null);
   const openEditDialog = (
     platform: SocialPlatform,
     existingUrl: string,
@@ -48,6 +48,13 @@ export function useDialogSocmedPicker() {
   }, []);
 
   const handleInputLink = async () => {
+    if (!selectedPlatform) return;
+
+    if (!socialLink.trim()) {
+      setInputError("Username tidak boleh kosong.");
+      return;
+    }
+
     const url = selectedPlatform
       ? `${selectedPlatform.baseUrl}${socialLink}`
       : "";
@@ -108,5 +115,7 @@ export function useDialogSocmedPicker() {
     setIsEditMode,
     setEditingLinkId,
     handleDeleteLink,
+    inputError,
+    setInputError,
   };
 }

@@ -4,20 +4,22 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter as userRouter } from "next/navigation";
 
-import ProfileCard from "@/components/core/profileCard";
+import ProfileCard from "@/components/dashboard/ProfileSection/profileCard";
 import { Button } from "@/components/ui/button";
 import { useProfileCardLogic } from "@/hooks/useProfileCardLogic";
-import SettingsDrawer from "@/components/core/settingsProfileDrawer";
-import EditProfileDrawer from "@/components/core/editProfileDrawer";
+import SettingsDrawer from "@/components/dashboard/EditProfile/settingsProfileDrawer";
+import EditProfileDrawer from "@/components/dashboard/EditProfile/editProfileDrawer";
 
-import UploadAndCrop from "@/components/core/uploadAndCrop";
-import PreviewDialog from "@/components/core/previewDialog";
-import DialogSocmedPicker from "@/components/core/dialogSocmedPicker";
+import UploadAndCrop from "@/components/dashboard/EditProfile/uploadAndCrop";
+import PreviewDialog from "@/components/dashboard/EditProfile/previewDialog";
+import DialogSocmedPicker from "@/components/dashboard/SocmedLinkManager/dialogSocmedPicker";
 import { useDialogSocmedPicker } from "@/hooks/useDialogSocmedPicker";
 
-import DialogSocmedInput from "@/components/core/dialogSocmedInput";
+import DialogSocmedInput from "@/components/dashboard/SocmedLinkManager/dialogSocmedInput";
 import { socialPlatforms } from "@/lib/socialPlatforms";
-import DialogSocmedEdit from "@/components/core/dialogSocmedEditLink";
+import DialogSocmedEdit from "@/components/dashboard/SocmedLinkManager/dialogSocmedEditLink";
+import { useLinkState } from "@/hooks/useDialogLink";
+import DialogInputLink from "@/components/dashboard/WebsiteLinkManager/dialogInputLink";
 
 export default function Dashboardpage() {
   const router = userRouter();
@@ -59,7 +61,17 @@ export default function Dashboardpage() {
     setIsEditMode,
     setEditingLinkId,
     handleDeleteLink,
+    inputError,
+    setInputError,
   } = useDialogSocmedPicker();
+  const {
+    isAddLinkDialogOpen,
+    openAddLinkDialog,
+    closeAddLinkDialog,
+    handleSubmit,
+    error,
+  } = useLinkState();
+
   useEffect(() => {
     const checkAuth = () => {
       const storedToken = localStorage.getItem("token");
@@ -77,10 +89,10 @@ export default function Dashboardpage() {
   }
 
   return (
-    <main className="flex flex-row min-h-screen bg-blue-950 not-only:overflow-x-hidden">
-      <section className="flex-1 flex justify-center bg-blue-950 mt-4">
+    <main className="flex flex-row min-h-screen bg-white not-only:overflow-x-hidden">
+      <section className="flex-1 flex justify-center bg-[#FBFBFB] mt-4">
         <div className="p-2 border border-amber-950 w-full max-w-md">
-          <div className="bg-white flex flex-col items-center mx-auto w-full max-w-md">
+          <div className="bg-[#E8F9FF] flex flex-col items-center mx-auto w-full max-w-md">
             <ProfileCard
               profile={profile}
               onEditClick={() => setIsEditOpen(true)}
@@ -102,7 +114,15 @@ export default function Dashboardpage() {
               }}
             />
           </div>
-          <Button className="w-full h-10 mt-3 mb-3">Tambahkan Link</Button>
+          <Button className="w-full h-10 mt-3 mb-3" onClick={openAddLinkDialog}>
+            + Tambahkan Link
+          </Button>
+          <DialogInputLink
+            open={isAddLinkDialogOpen}
+            onClose={closeAddLinkDialog}
+            onSubmit={(data) => handleSubmit(data.title, data.url)}
+            error={error}
+          />
           <EditProfileDrawer
             open={isEditOpen}
             onOpenChange={setIsEditOpen}
@@ -155,12 +175,16 @@ export default function Dashboardpage() {
 
           <DialogSocmedInput
             open={inputDialogOpen}
-            onChange={setSocialLink}
+            onChange={(val) => {
+              setSocialLink(val);
+              if (inputError) setInputError(null); // reset error saat input berubah
+            }}
             onClose={setInputDialogOpen}
             platform={selectedPlatform}
             value={socialLink}
             onBack={handleBackToSelectPlatform}
             onSubmit={handleInputLink}
+            error={inputError}
           />
           <DialogSocmedEdit
             open={inputDialogOpen && isEditMode}

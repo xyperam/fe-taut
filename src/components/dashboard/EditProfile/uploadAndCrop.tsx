@@ -4,7 +4,7 @@ import React, { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { getCroppedImg } from "@/lib/cropImage";
 import {
   Dialog,
