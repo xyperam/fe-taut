@@ -44,7 +44,7 @@ export const CardItem = ({
         <div className="flex flex-row items-center  gap-4 relative">
           <div
             {...dragHandleProps}
-            className="cursor-grab text-gray-400 touch-none select-none active:cursor-grabbing self-center"
+            className="cursor-grab text-gray-400 touch-none select-none active:cursor-grabbing self-center pt-8"
           >
             <GripVertical />
           </div>

@@ -32,7 +32,7 @@ export default function ProfileCard({
 }: ProfileCardProps) {
   return (
     <div className="  flex flex-row justify-between items-center w-full">
-      <div className="flex gap-2 items-center ">
+      <div className="flex gap-2 items-center ml-2 ">
         <Avatar className="w-16 h-16">
           <AvatarImage
             src={profile.profilePicture || "https://github.com/shadcn.png"}
