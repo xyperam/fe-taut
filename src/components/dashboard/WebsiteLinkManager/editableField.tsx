@@ -39,20 +39,26 @@ export function EditableTextField({
       onKeyDown={handleKeyDown}
       autoFocus
       placeholder={placeholder}
-      className="text-base border-none focus:ring-0 focus-visible:ring-0 focus:outline-none shadow-none px-0"
+      className="text-base border-none focus:ring-0 focus-visible:ring-0 focus:outline-none shadow-none px-0 py-1 h-7"
     />
   ) : (
     <div className="flex items-center gap-2  ">
-      <span className="text-base truncate overflow-hidden whitespace-nowrap ">
+      <span
+        className="text-base truncate overflow-hidden whitespace-nowrap "
+        onClick={() => {
+          setIsEditing(true);
+          setTimeout(() => inputRef.current?.focus(), 0);
+        }}
+      >
         {value || placeholder || "—"}
       </span>
-      <Pencil
+      {/* <Pencil
         className="w-4 h-4 text-muted-foreground cursor-pointer "
         onClick={() => {
           setIsEditing(true);
           setTimeout(() => inputRef.current?.focus(), 0);
         }}
-      />
+      /> */}
     </div>
   );
 }

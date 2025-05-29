@@ -10,8 +10,7 @@ import { useProfileCardLogic } from "@/hooks/useProfileCardLogic";
 import SettingsDrawer from "@/components/dashboard/EditProfile/settingsProfileDrawer";
 import EditProfileDrawer from "@/components/dashboard/EditProfile/editProfileDrawer";
 
-import UploadAndCrop from "@/components/dashboard/EditProfile/uploadAndCrop";
-import PreviewDialog from "@/components/dashboard/EditProfile/previewDialog";
+import PreviewDialog from "@/components/core/upload/previewDialog";
 import DialogSocmedPicker from "@/components/dashboard/SocmedLinkManager/dialogSocmedPicker";
 import { useDialogSocmedPicker } from "@/hooks/useDialogSocmedPicker";
 
@@ -21,6 +20,7 @@ import DialogSocmedEdit from "@/components/dashboard/SocmedLinkManager/dialogSoc
 import { useLinkState } from "@/hooks/useDialogLink";
 import DialogInputLink from "@/components/dashboard/WebsiteLinkManager/dialogInputLink";
 import SortableCardList from "@/components/dashboard/WebsiteLinkManager/sortableCardList";
+import UploadAndCrop from "@/components/core/upload/uploadAndCrop";
 
 export default function Dashboardpage() {
   const router = userRouter();

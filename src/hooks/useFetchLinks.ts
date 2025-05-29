@@ -1,4 +1,4 @@
-import { editLink, getLinks } from "@/redux/slice/link.slice";
+import { editLink, getLinks, deleteLink } from "@/redux/slice/link.slice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,6 +37,24 @@ export function useFetchLinks() {
     },
     [dispatch, links]
   );
+  const handleDeleteCard = useCallback(
+    async (id: string) => {
+      const linkId = Number(id);
+      const existingLink = links.find((link) => link.id === linkId);
 
-  return { links, loading, error, fetch, update };
+      if (!existingLink) {
+        console.warn(`Link with ID ${id} not found for deletion`);
+        return;
+      }
+
+      try {
+        await dispatch(deleteLink(existingLink.id)).unwrap();
+      } catch (err) {
+        console.error("Gagal Delete Link:", err);
+      }
+    },
+    [dispatch, links]
+  );
+
+  return { links, loading, error, fetch, update, handleDeleteCard };
 }

@@ -14,6 +14,8 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useFetchLinks } from "@/hooks/useFetchLinks";
+import UploadAndCrop from "@/components/core/upload/uploadAndCrop";
+import PreviewDialog from "@/components/core/upload/previewDialog";
 // Tipe data
 type LinkItem = {
   id: string;
@@ -24,7 +26,9 @@ type LinkItem = {
 export default function SortableCardList() {
   const { links, loading, error, fetch, update } = useFetchLinks();
   const [items, setItems] = useState<LinkItem[]>([]);
-
+  const [openModal, setOpenModal] = useState(false);
+  const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
+  const { handleDeleteCard } = useFetchLinks();
   //get data from Redux
   useEffect(() => {
     fetch();
@@ -64,7 +68,14 @@ export default function SortableCardList() {
       setItems(arrayMove(items, oldIndex, newIndex));
     }
   };
-
+  const handleDeleteItem = async (id: string) => {
+    try {
+      await handleDeleteCard(id); // Hapus dari Redux / backend
+      setItems((prev) => prev.filter((item) => item.id !== id)); // Hapus dari local state
+    } catch (err) {
+      console.error("Gagal menghapus item:", err);
+    }
+  };
   const handleUpdateItem = async (
     id: string,
     field: "title" | "url",
@@ -85,27 +96,51 @@ export default function SortableCardList() {
   if (error) return <div className="text-red-500">Error: {String(error)}</div>;
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext
-        items={items.map((i) => i.id)}
-        strategy={verticalListSortingStrategy}
+    <>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
       >
-        <div className="flex flex-col gap-4">
-          {items.map((item) => (
-            <SortableCard
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              url={item.url}
-              onUpdate={handleUpdateItem}
-            />
-          ))}
-        </div>
-      </SortableContext>
-    </DndContext>
+        <SortableContext
+          items={items.map((i) => i.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="flex flex-col gap-4">
+            {items.map((item) => (
+              <SortableCard
+                key={item.id}
+                id={item.id}
+                title={item.title}
+                url={item.url}
+                onUpdate={handleUpdateItem}
+                onDelete={() => handleDeleteItem(item.id)}
+                onOpenModalUpload={() => setOpenModal(true)}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
+
+      <UploadAndCrop
+        key={openModal ? "modal-open" : "modal-closed"}
+        open={openModal}
+        onOpenChange={setOpenModal}
+        onCropComplete={(blob) => {
+          setCroppedImage(blob);
+          setOpenModal(false);
+        }}
+      />
+      <PreviewDialog
+        open={!!croppedImage}
+        onOpenChange={(v) => !v && setCroppedImage(null)}
+        image={croppedImage}
+        onBack={() => setCroppedImage(null)}
+        onUpload={(blob) => {
+          console.log("Upload blob ke server:", blob);
+          setCroppedImage(null);
+        }}
+      />
+    </>
   );
 }

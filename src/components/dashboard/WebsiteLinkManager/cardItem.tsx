@@ -10,8 +10,12 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
-
+import {
+  faToggleOff,
+  faToggleOn,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 type Props = {
   title: string;
   url: string;
@@ -19,6 +23,8 @@ type Props = {
   dragHandleProps?: any;
   cardRef?: (node: HTMLElement | null) => void;
   style?: React.CSSProperties;
+  onDelete: () => void;
+  onOpenModalUpload: () => void;
 };
 
 export const CardItem = ({
@@ -28,48 +34,67 @@ export const CardItem = ({
   dragHandleProps,
   cardRef,
   style,
+  onDelete,
+  onOpenModalUpload,
 }: Props) => {
   const [isToggled, setIsToggled] = useState(false);
   return (
-    <Card
-      ref={cardRef}
-      style={style}
-      className="flex flex-row items-center p-2 gap-2 relative"
-    >
-      <button
-        onClick={() => setIsToggled((prev) => !prev)}
-        className="absolute top-2 right-2"
-      >
-        {isToggled ? (
+    <Card ref={cardRef} style={style} className="p-1 py-3">
+      <div className="flex flex-col">
+        <div className="flex flex-row items-center  gap-4 relative">
+          <div
+            {...dragHandleProps}
+            className="cursor-grab text-gray-400 touch-none select-none active:cursor-grabbing self-center"
+          >
+            <GripVertical />
+          </div>
+          <div className="flex flex-col flex-1 overflow-hidden gap-1">
+            <EditableTextField
+              value={title}
+              onSave={(val) => onUpdate("title", val)}
+              placeholder="Title"
+            />
+            <EditableTextField
+              value={url}
+              onSave={(val) => onUpdate("url", val)}
+              placeholder="URL"
+            />
+          </div>
+          <div
+            className="w-24 h-12 relative cursor-pointer"
+            onClick={onOpenModalUpload}
+          >
+            <Image
+              src="/images/imageAdd.png"
+              alt="Foto Profil"
+              fill
+              className="object-contain w-24 h-12 relative "
+            />
+          </div>
+        </div>
+        <div className="flex flex-row justify-end gap-3 px-5 pt-3 ">
           <FontAwesomeIcon
-            icon={faToggleOff}
-            className="text-gray-500 text-xl"
+            icon={faTrash}
+            className="text-lg text-gray-400 hover:text-red-400 cursor-pointer"
+            onClick={onDelete}
           />
-        ) : (
-          <FontAwesomeIcon
-            icon={faToggleOn}
-            className="text-blue-500 text-xl"
-          />
-        )}
-      </button>
-
-      <div
-        {...dragHandleProps}
-        className="cursor-grab text-gray-400 touch-none select-none active:cursor-grabbing"
-      >
-        <GripVertical />
-      </div>
-      <div className="flex flex-col flex-1 overflow-hidden gap-1">
-        <EditableTextField
-          value={title}
-          onSave={(val) => onUpdate("title", val)}
-          placeholder="Title"
-        />
-        <EditableTextField
-          value={url}
-          onSave={(val) => onUpdate("url", val)}
-          placeholder="URL"
-        />
+          <button
+            onClick={() => setIsToggled((prev) => !prev)}
+            className="cursor-pointer"
+          >
+            {isToggled ? (
+              <FontAwesomeIcon
+                icon={faToggleOff}
+                className="text-gray-500 text-lg"
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faToggleOn}
+                className="text-blue-500 text-lg"
+              />
+            )}
+          </button>
+        </div>
       </div>
     </Card>
   );
