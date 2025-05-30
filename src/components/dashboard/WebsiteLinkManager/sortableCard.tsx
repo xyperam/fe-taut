@@ -7,6 +7,7 @@ type Props = {
   id: string;
   title: string;
   url: string;
+  imageUrl: string;
   onUpdate: (id: string, field: "title" | "url", value: string) => void;
   onDelete: () => void;
   onOpenModalUpload: () => void;
@@ -15,6 +16,7 @@ export default function SortableCard({
   id,
   title,
   url,
+  imageUrl,
   onUpdate,
   onDelete,
   onOpenModalUpload,
@@ -31,6 +33,7 @@ export default function SortableCard({
     <CardItem
       title={title}
       url={url}
+      imageUrl={imageUrl}
       style={style}
       cardRef={setNodeRef}
       dragHandleProps={{ ...attributes, ...listeners }}

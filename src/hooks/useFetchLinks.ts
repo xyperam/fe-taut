@@ -1,4 +1,9 @@
-import { editLink, getLinks, deleteLink } from "@/redux/slice/link.slice";
+import {
+  editLink,
+  getLinks,
+  deleteLink,
+  updateHeaderImage,
+} from "@/redux/slice/link.slice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,6 +42,19 @@ export function useFetchLinks() {
     },
     [dispatch, links]
   );
+
+  const uploadHeaderImage = useCallback(
+    async (id: string, file: Blob) => {
+      try {
+        await dispatch(updateHeaderImage({ id: Number(id), file })).unwrap();
+      } catch (err) {
+        console.error("Gagal upload header image:", err);
+        throw err;
+      }
+    },
+    [dispatch]
+  );
+
   const handleDeleteCard = useCallback(
     async (id: string) => {
       const linkId = Number(id);
@@ -56,5 +74,13 @@ export function useFetchLinks() {
     [dispatch, links]
   );
 
-  return { links, loading, error, fetch, update, handleDeleteCard };
+  return {
+    links,
+    loading,
+    error,
+    fetch,
+    update,
+    handleDeleteCard,
+    uploadHeaderImage,
+  };
 }

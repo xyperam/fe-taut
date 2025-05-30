@@ -19,6 +19,7 @@ import Image from "next/image";
 type Props = {
   title: string;
   url: string;
+  imageUrl: string;
   onUpdate: (field: "title" | "url", value: string) => void;
   dragHandleProps?: any;
   cardRef?: (node: HTMLElement | null) => void;
@@ -30,6 +31,7 @@ type Props = {
 export const CardItem = ({
   title,
   url,
+  imageUrl,
   onUpdate,
   dragHandleProps,
   cardRef,
@@ -65,7 +67,7 @@ export const CardItem = ({
             onClick={onOpenModalUpload}
           >
             <Image
-              src="/images/imageAdd.png"
+              src={imageUrl?.trim() || "images/imageAdd.png"}
               alt="Foto Profil"
               fill
               className="object-contain w-24 h-12 relative "

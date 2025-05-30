@@ -21,14 +21,25 @@ type LinkItem = {
   id: string;
   title: string;
   url: string;
+  imageUrl: string;
 };
 
 export default function SortableCardList() {
-  const { links, loading, error, fetch, update } = useFetchLinks();
+  const {
+    links,
+    loading,
+    error,
+    fetch,
+    update,
+    handleDeleteCard,
+    uploadHeaderImage,
+  } = useFetchLinks();
   const [items, setItems] = useState<LinkItem[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
-  const { handleDeleteCard } = useFetchLinks();
+
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const defaultImage = "/images/imageAdd.png";
   //get data from Redux
   useEffect(() => {
     fetch();
@@ -43,6 +54,11 @@ export default function SortableCardList() {
           id: String(link.id),
           title: link.title,
           url: link.url,
+          // imageUrl: link.imageUrl,
+          imageUrl:
+            link.imageUrl && link.imageUrl.trim() !== ""
+              ? link.imageUrl
+              : defaultImage,
         }));
       setItems(filtered);
     }
@@ -113,9 +129,13 @@ export default function SortableCardList() {
                 id={item.id}
                 title={item.title}
                 url={item.url}
+                imageUrl={item.imageUrl}
                 onUpdate={handleUpdateItem}
                 onDelete={() => handleDeleteItem(item.id)}
-                onOpenModalUpload={() => setOpenModal(true)}
+                onOpenModalUpload={() => {
+                  setSelectedId(item.id);
+                  setOpenModal(true);
+                }}
               />
             ))}
           </div>
@@ -136,9 +156,16 @@ export default function SortableCardList() {
         onOpenChange={(v) => !v && setCroppedImage(null)}
         image={croppedImage}
         onBack={() => setCroppedImage(null)}
-        onUpload={(blob) => {
-          console.log("Upload blob ke server:", blob);
-          setCroppedImage(null);
+        onUpload={async (blob) => {
+          try {
+            const targetId = selectedId; // pastikan selectedId di-set saat buka modal
+            if (!targetId)
+              throw new Error("No target selected for header image");
+            await uploadHeaderImage(targetId, blob);
+            setCroppedImage(null);
+          } catch (err) {
+            console.error("Upload header image gagal:", err);
+          }
         }}
       />
     </>

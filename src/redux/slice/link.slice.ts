@@ -85,6 +85,28 @@ export const deleteLink = createAsyncThunk<number, number>(
     }
   }
 );
+export const updateHeaderImage = createAsyncThunk<
+  { id: number; header_image_url: string },
+  { id: number; file: Blob },
+  { rejectValue: string }
+>("profile/updateHeaderImage", async ({ id, file }, { rejectWithValue }) => {
+  try {
+    const formData = new FormData();
+    formData.append("header_image_url", file);
+
+    const response = await api.post(
+      `/profile/link/${id}/header-image`,
+      formData
+    );
+    return { id, header_image_url: response.data.header_image_url };
+  } catch (err) {
+    const error = err as AxiosError<{ error: string }>;
+    if (error.response?.data?.error) {
+      return rejectWithValue(error.response.data.error);
+    }
+    return rejectWithValue("Unknown error");
+  }
+});
 
 export interface LinkItem {
   id: number;
@@ -94,6 +116,7 @@ export interface LinkItem {
   active: boolean;
   platform: string;
   type?: string;
+  imageUrl?: string;
 }
 
 interface LinkState {
@@ -189,6 +212,22 @@ export const linkSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
         state.success = false;
+      })
+      .addCase(updateHeaderImage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateHeaderImage.fulfilled, (state, action) => {
+        state.loading = false;
+        const { id, header_image_url } = action.payload;
+        const link = state.links.find((l) => l.id === id);
+        if (link) {
+          (link as any).imageUrl = header_image_url; // Tambahkan field ke state
+        }
+      })
+      .addCase(updateHeaderImage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
