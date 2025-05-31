@@ -26,6 +26,7 @@ type Props = {
   style?: React.CSSProperties;
   onDelete: () => void;
   onOpenModalUpload: () => void;
+  onOpenModalRemove: () => void;
 };
 
 export const CardItem = ({
@@ -38,6 +39,7 @@ export const CardItem = ({
   style,
   onDelete,
   onOpenModalUpload,
+  onOpenModalRemove,
 }: Props) => {
   const [isToggled, setIsToggled] = useState(false);
   return (
@@ -64,12 +66,24 @@ export const CardItem = ({
           </div>
           <div
             className="w-24 h-12 relative cursor-pointer"
-            onClick={onOpenModalUpload}
+            onClick={() => {
+              const trimmedImage = imageUrl?.trim();
+              const isDefaultImage =
+                !trimmedImage || trimmedImage === "/images/imageAdd.png";
+
+              if (isDefaultImage) {
+                onOpenModalUpload();
+              } else {
+                console.log("Buka modal ganti");
+                onOpenModalRemove();
+              }
+            }}
           >
             <Image
               src={imageUrl?.trim() || "images/imageAdd.png"}
               alt="Foto Profil"
               fill
+              sizes="96px"
               className="object-contain w-24 h-12 relative "
             />
           </div>

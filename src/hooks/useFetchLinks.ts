@@ -3,6 +3,7 @@ import {
   getLinks,
   deleteLink,
   updateHeaderImage,
+  deleteHeaderImage,
 } from "@/redux/slice/link.slice";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useCallback } from "react";
@@ -54,7 +55,6 @@ export function useFetchLinks() {
     },
     [dispatch]
   );
-
   const handleDeleteCard = useCallback(
     async (id: string) => {
       const linkId = Number(id);
@@ -73,6 +73,24 @@ export function useFetchLinks() {
     },
     [dispatch, links]
   );
+  const handleDeleteImage = useCallback(
+    async (id: string) => {
+      const linkId = Number(id);
+      const existingLink = links.find((link) => link.id === linkId);
+
+      if (!existingLink) {
+        console.warn(`Link with ID ${id} not found for deletion`);
+        return;
+      }
+
+      try {
+        await dispatch(deleteHeaderImage(existingLink.id)).unwrap();
+      } catch (err) {
+        console.error("Gagal Delete Image:", err);
+      }
+    },
+    [dispatch, links]
+  );
 
   return {
     links,
@@ -82,5 +100,6 @@ export function useFetchLinks() {
     update,
     handleDeleteCard,
     uploadHeaderImage,
+    handleDeleteImage,
   };
 }

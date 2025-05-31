@@ -11,6 +11,7 @@ type Props = {
   onUpdate: (id: string, field: "title" | "url", value: string) => void;
   onDelete: () => void;
   onOpenModalUpload: () => void;
+  onOpenModalRemove: () => void;
 };
 export default function SortableCard({
   id,
@@ -20,6 +21,7 @@ export default function SortableCard({
   onUpdate,
   onDelete,
   onOpenModalUpload,
+  onOpenModalRemove,
 }: Props) {
   const { handleDeleteCard } = useFetchLinks();
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -40,6 +42,7 @@ export default function SortableCard({
       onUpdate={(field, val) => onUpdate(id, field, val)}
       onDelete={onDelete} // Updated to pass id as an argument
       onOpenModalUpload={onOpenModalUpload}
+      onOpenModalRemove={onOpenModalRemove}
     />
   );
 }

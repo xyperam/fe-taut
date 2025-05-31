@@ -16,6 +16,7 @@ import {
 import { useFetchLinks } from "@/hooks/useFetchLinks";
 import UploadAndCrop from "@/components/core/upload/uploadAndCrop";
 import PreviewDialog from "@/components/core/upload/previewDialog";
+import { RemoveImageDialog } from "./removeImageDialog";
 // Tipe data
 type LinkItem = {
   id: string;
@@ -33,12 +34,14 @@ export default function SortableCardList() {
     update,
     handleDeleteCard,
     uploadHeaderImage,
+    handleDeleteImage,
   } = useFetchLinks();
   const [items, setItems] = useState<LinkItem[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [croppedImage, setCroppedImage] = useState<Blob | null>(null);
-
+  const [onOpenModalRemove, setOpenModalRemove] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
   const defaultImage = "/images/imageAdd.png";
   //get data from Redux
   useEffect(() => {
@@ -92,6 +95,18 @@ export default function SortableCardList() {
       console.error("Gagal menghapus item:", err);
     }
   };
+
+  const onDeleteImg = async () => {
+    if (selectedId) {
+      try {
+        await handleDeleteImage(selectedId);
+        setOpenModalRemove(false);
+      } catch (err) {
+        console.error("Gagal menghapus gambar header:", err);
+      }
+    }
+  };
+
   const handleUpdateItem = async (
     id: string,
     field: "title" | "url",
@@ -136,12 +151,30 @@ export default function SortableCardList() {
                   setSelectedId(item.id);
                   setOpenModal(true);
                 }}
+                onOpenModalRemove={() => {
+                  setSelectedId(item.id);
+                  setSelectedImageUrl(item.imageUrl);
+                  setOpenModalRemove(true);
+                }}
               />
             ))}
           </div>
         </SortableContext>
       </DndContext>
-
+      <RemoveImageDialog
+        open={onOpenModalRemove}
+        imageUrl={selectedImageUrl || defaultImage}
+        onClose={() => {
+          setOpenModalRemove(false);
+        }}
+        onOpenModalUpload={() => {
+          setOpenModal(true);
+          setOpenModalRemove(false);
+        }}
+        onDeleteImg={() => {
+          onDeleteImg();
+        }}
+      />
       <UploadAndCrop
         key={openModal ? "modal-open" : "modal-closed"}
         open={openModal}
