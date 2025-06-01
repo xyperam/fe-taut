@@ -28,10 +28,12 @@ export default function DashboardLayout({
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
+        {/* main content and preview */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <main className="flex-1 h-full overflow-y-auto bg-[#ebe8e8]">
             {children}
           </main>
+          {/* Mobile only */}
           <BottomNav />
         </div>
       </div>

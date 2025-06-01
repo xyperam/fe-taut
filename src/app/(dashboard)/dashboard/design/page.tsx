@@ -3,6 +3,7 @@
 import React from "react";
 import DashboardContent from "@/components/dashboard/DashboardContent";
 import Preview from "@/components/preview/preview";
+import DesignContent from "@/components/design/design";
 
 export default function DashboardPage() {
   return (
@@ -16,7 +17,7 @@ export default function DashboardPage() {
       <div className="flex flex-1 overflow-hidden">
         {/* Konten dashboard */}
         <div className="flex-1 overflow-y-auto">
-          <DashboardContent />
+          <DesignContent />
         </div>
 
         {/* Preview hanya di desktop */}

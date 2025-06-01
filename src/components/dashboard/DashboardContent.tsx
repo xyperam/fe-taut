@@ -95,8 +95,8 @@ export default function DashboardContent() {
 
   return (
     <section className="flex-1 flex justify-center overflow-y-auto bg-[#ebe8e8] mt-4 w-full pb-24">
-      <div className="w-full max-w-md space-y-4 p-4">
-        <div className="bg-white flex flex-col items-center mx-auto w-full max-w-md rounded-md shadow-xl">
+      <div className="w-full max-w-md md:max-w-2xl space-y-4 p-4">
+        <div className="bg-white flex flex-col items-center mx-auto w-full rounded-md shadow-xl">
           <ProfileCard
             profile={profile}
             onEditClick={() => setIsEditOpen(true)}
