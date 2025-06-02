@@ -8,7 +8,7 @@ export default function DashboardPage() {
   return (
     <main className="flex flex-col w-full h-full overflow-hidden">
       {/* Header Utama */}
-      <div className="bg-blue-400 px-4 py-3 shadow-md z-10">
+      <div className="bg-[#9FB3DF] px-4 py-3 shadow-md z-10">
         <h1 className="text-lg font-semibold text-white">Your link </h1>
       </div>
 
@@ -20,8 +20,8 @@ export default function DashboardPage() {
         </div>
 
         {/* Preview hanya di desktop */}
-        <div className="hidden md:flex w-[400px] bg-white border-l overflow-y-auto">
-          <div className="p-4 w-full flex justify-center items-start">
+        <div className="hidden md:flex w-[400px] bg-white border-l overflow-y-auto h-screen">
+          <div className="-mt-8 w-full flex justify-center items-center">
             <Preview />
           </div>
         </div>

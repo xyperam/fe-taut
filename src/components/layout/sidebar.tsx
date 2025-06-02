@@ -22,12 +22,12 @@ export default function Sidebar() {
   return (
     <aside
       className="hidden md:flex flex-col w-64"
-      style={{ backgroundColor: "#c9eeff" }}
+      style={{ backgroundColor: "#FFFFFFFF" }}
     >
       <h2 className="text-xl font-bold mb-4 ml-4 mt-4">TAUT</h2>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="flex flex-row w-full gap-2 p-2 cursor-pointer bg-[#c9eeff] hover:bg-gray-100">
+          <div className="flex flex-row w-full gap-2 p-2 cursor-pointer bg-[#ffffff] hover:bg-gray-100">
             <Avatar className="w-14 h-14">
               <AvatarImage
                 src={profile.profilePicture || "https://github.com/shadcn.png"}
@@ -56,7 +56,7 @@ export default function Sidebar() {
       </DropdownMenu>
       <nav className="flex flex-col gap-2">
         {navItems.map((item) => (
-          <NavigationItem key={item.path} {...item} orientation="vertical" />
+          <NavigationItem key={item.path} {...item} orientation="horizontal" />
         ))}
       </nav>
     </aside>

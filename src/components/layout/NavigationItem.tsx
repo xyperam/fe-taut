@@ -23,7 +23,7 @@ const NavigationItem = ({
     <Link
       href={path}
       className={`
-        flex items-center justify-center p-2 rounded-lg transition-colors duration-200
+        flex items-center justify-start p-2 rounded-lg transition-colors duration-200
          ${orientation === "vertical" ? "flex-col flex-1" : "justify-center"}
         ${
           isActive

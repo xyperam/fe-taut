@@ -4,12 +4,14 @@ import React from "react";
 import DashboardContent from "@/components/dashboard/DashboardContent";
 import Preview from "@/components/preview/preview";
 import DesignContent from "@/components/design/design";
+import { useProfileCardLogic } from "@/hooks/useProfileCardLogic";
 
 export default function DashboardPage() {
+  const { profile, socialLinks } = useProfileCardLogic();
   return (
     <main className="flex flex-col w-full h-full overflow-hidden">
       {/* Header Utama */}
-      <div className="bg-blue-400 px-4 py-3 shadow-md z-10">
+      <div className="bg-[#9FB3DF] px-4 py-3 shadow-md z-10">
         <h1 className="text-lg font-semibold text-white">Your link </h1>
       </div>
 
@@ -22,7 +24,7 @@ export default function DashboardPage() {
 
         {/* Preview hanya di desktop */}
         <div className="hidden md:flex w-[400px] bg-white border-l overflow-y-auto">
-          <div className="p-4 w-full flex justify-center items-start">
+          <div className="p-4 w-full h-full flex justify-center items-center">
             <Preview />
           </div>
         </div>

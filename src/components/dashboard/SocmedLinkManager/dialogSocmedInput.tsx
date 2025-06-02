@@ -63,7 +63,7 @@ export default function DialogSocmedInput({
         {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
         <div className="flex flex-row gap-2 mt-4">
           <Button className="flex-1" onClick={onSubmit}>
-            Add
+            Simpan
           </Button>
         </div>
       </DialogContent>
