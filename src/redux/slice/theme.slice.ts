@@ -20,7 +20,23 @@ export const getTheme = createAsyncThunk(
   }
 );
 
-interface Theme {
+export const updateUserTheme = createAsyncThunk(
+  "profile/updateUserTheme",
+  async (payload: Partial<Theme>, { rejectWithValue }) => {
+    try {
+      const response = await api.patch("user-theme", payload);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(
+          error.response?.data.error || "Terhadi kesalahan"
+        );
+      }
+      return rejectWithValue("Unknown Error");
+    }
+  }
+);
+export interface Theme {
   id: number;
   user_id: number;
   name: string;
@@ -30,7 +46,7 @@ interface Theme {
   buttonBorderColor?: string;
   buttonShape?: "pill" | "rounded" | "square";
   fontFamily?: string;
-  useBackgroundImage?: string;
+  useBackgroundImage?: boolean;
   backgroundImageUrl?: string;
 }
 
@@ -66,13 +82,32 @@ export const themeSlice = createSlice({
       })
       .addCase(getTheme.fulfilled, (state, action) => {
         state.loading = false;
-        state.theme = action.payload;
+        state.theme = action.payload.theme;
         state.success = true;
         state.isFetched = true;
       })
       .addCase(getTheme.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || "gagal mengambil data tema";
+        state.success = false;
+        state.isFetched = false;
+      })
+      //update tema
+      .addCase(updateUserTheme.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(updateUserTheme.fulfilled, (state, action) => {
+        console.log("UPDATED THEME PAYLOAD:", action.payload);
+        state.loading = false;
+        state.theme = action.payload.theme;
+        state.success = true;
+        state.isFetched = true;
+      })
+      .addCase(updateUserTheme.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || "Gagal update tema";
         state.success = false;
       });
   },

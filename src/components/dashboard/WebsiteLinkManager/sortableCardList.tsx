@@ -117,7 +117,8 @@ export default function SortableCardList() {
     );
 
     try {
-      await update(id, field, value); // ✅ Sync ke Redux dan backend
+      await update(id, field, value);
+      await fetch(); //Sync ke Redux dan backend
     } catch (err) {
       console.error("Update gagal:", err);
     }

@@ -15,7 +15,7 @@ export default function Preview() {
         backgroundColor: theme?.background,
         fontFamily: theme?.fontFamily || "inherit",
         backgroundImage:
-          theme?.useBackgroundImage === "true" && theme.backgroundImageUrl
+          theme?.useBackgroundImage === true && theme.backgroundImageUrl
             ? `url(${theme.backgroundImageUrl})`
             : undefined,
         backgroundSize: "cover",

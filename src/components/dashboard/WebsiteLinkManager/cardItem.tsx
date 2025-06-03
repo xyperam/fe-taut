@@ -69,7 +69,7 @@ export const CardItem = ({
             onClick={() => {
               const trimmedImage = imageUrl?.trim();
               const isDefaultImage =
-                !trimmedImage || trimmedImage === "/images/imageAdd.png";
+                !trimmedImage || trimmedImage.includes("/images/imageAdd.png");
 
               if (isDefaultImage) {
                 onOpenModalUpload();
@@ -80,7 +80,7 @@ export const CardItem = ({
             }}
           >
             <Image
-              src={imageUrl?.trim() || "images/imageAdd.png"}
+              src={imageUrl?.trim() || "/images/imageAdd.png"}
               alt="Foto Profil"
               fill
               sizes="96px"
