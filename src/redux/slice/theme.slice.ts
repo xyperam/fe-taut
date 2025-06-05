@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import api from "@/lib/axios_utils";
 
@@ -40,11 +40,12 @@ export interface Theme {
   id: number;
   user_id: number;
   name: string;
+  avatarBorder: string;
   background: string;
   textColor: string;
   buttonColor: string;
   buttonBorderColor?: string;
-  buttonShape?: "pill" | "rounded" | "square";
+  buttonShape?: string;
   fontFamily?: string;
   useBackgroundImage?: boolean;
   backgroundImageUrl?: string;
@@ -69,7 +70,7 @@ export const themeSlice = createSlice({
   name: "theme",
   initialState,
   reducers: {
-    setTheme: (state, action) => {
+    setTheme: (state, action: PayloadAction<Theme>) => {
       state.theme = action.payload;
     },
   },
@@ -112,5 +113,5 @@ export const themeSlice = createSlice({
       });
   },
 });
-
+export const { setTheme } = themeSlice.actions;
 export default themeSlice.reducer;

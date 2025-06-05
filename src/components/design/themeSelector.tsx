@@ -20,7 +20,7 @@ export default function ThemeSelector({
   return (
     <div className="bg-white flex flex-col mx-auto w-full rounded-md shadow-xl p-4">
       <h1 className="text-lg font-semibold mb-4">Gaya Tema</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
         {themes.map((theme) => {
           console.log("compare", {
             fromRedux: selectedTheme,
@@ -31,13 +31,15 @@ export default function ThemeSelector({
             <button
               key={theme.key}
               onClick={() => onThemeSelect(theme.key)}
-              className={`cursor-pointer rounded-md border-2 p-2 transition focus:outline-none focus:ring-2 ${
+              className={` w-full max-w-[180px] mx-auto cursor-pointer rounded-md border-2 p-2 transition focus:outline-none focus:ring-2 ${
                 selectedTheme === theme.key
                   ? "border-blue-600 ring-blue-200"
                   : "border-transparent"
               }`}
             >
-              {theme.component}
+              <div className="w-full aspect-[3/4] flex items-center justify-center">
+                {theme.component}
+              </div>
             </button>
           );
         })}

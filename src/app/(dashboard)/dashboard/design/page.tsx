@@ -18,14 +18,14 @@ export default function DashboardPage() {
       {/* Konten Utama */}
       <div className="flex flex-1 overflow-hidden">
         {/* Konten dashboard */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto ">
           <DesignContent />
         </div>
 
         {/* Preview hanya di desktop */}
-        <div className="hidden md:flex w-[400px] bg-white border-l overflow-y-auto">
+        <div className="hidden md:flex bg-white border-l overflow-y-auto">
           <div className="p-4 w-full h-full flex justify-center items-center">
-            {/* <Preview /> */}
+            <Preview />
           </div>
         </div>
       </div>

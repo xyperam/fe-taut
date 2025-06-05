@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { usePreviewData } from "@/hooks/usePreviewData";
 import { socialPlatforms } from "@/lib/socialPlatforms";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export default function Preview() {
   const { theme, loading, error } = useTheme();
   const { profile, socialLinks, linkButtons } = usePreviewData();
@@ -23,17 +24,33 @@ export default function Preview() {
       }}
     >
       {/* "Layar" handphone */}
-      <div className="w-full h-full overflow-y-auto p-4">
+      <div className="w-full h-full overflow-y-auto p-4 scrollbar-hide">
         <div className="flex min-h-full">
           <div className="flex flex-col items-center px-4 py-6 w-full">
-            {/* Avatar */}
-            <Image
-              src={profile?.profilePicture || "/default-avatar.png"}
-              width={96}
-              height={96}
-              alt="foto-profile"
-              className="rounded-full"
-            />
+            <Avatar
+              className={`w-24 h-24 ${
+                theme?.avatarBorder === "circle" ? "rounded-full" : "rounded-lg"
+              }`}
+            >
+              <AvatarImage
+                src={profile.profilePicture || "https://github.com/shadcn.png"}
+                alt="Profile Picture"
+                className={
+                  theme?.avatarBorder === "circle"
+                    ? "rounded-full"
+                    : "rounded-lg"
+                }
+              />
+              <AvatarFallback
+                className={
+                  theme?.avatarBorder === "circle"
+                    ? "rounded-full"
+                    : "rounded-lg"
+                }
+              >
+                {profile.displayname?.[0] || "?"}
+              </AvatarFallback>
+            </Avatar>
 
             {/* Nama & Bio */}
             <h1
@@ -96,25 +113,21 @@ export default function Preview() {
                         ? "0.5rem"
                         : "0",
                   }}
-                  onClick={() => window.open(link.url, "_blank")} // ganti onClick jika pakai button bukan link
+                  onClick={() => window.open(link.url, "_blank")} //
                 >
-                  <div
-                    className={`flex w-full px-4 py-3 gap-3 items-center ${
-                      link.imageUrl
-                        ? "justify-start"
-                        : "justify-center text-center"
-                    }`}
-                  >
-                    {link.imageUrl && (
-                      <Image
-                        src={link.imageUrl}
-                        alt="icon"
-                        width={20}
-                        height={20}
-                        className="object-contain shrink-0 mt-[2px]"
-                      />
-                    )}
-                    <span className="whitespace-normal text-sm leading-snug break-words w-full overflow-hidden text-ellipsis line-clamp-2">
+                  <div className="flex items-center w-full px-2 py-3">
+                    <div className="h-[20px] w-[20px]">
+                      {link.imageUrl && (
+                        <Image
+                          src={link.imageUrl}
+                          alt="icon"
+                          width={20}
+                          height={20}
+                          className="object-contain shrink-0"
+                        />
+                      )}
+                    </div>
+                    <span className="flex-1 text-sm leading-snug text-center break-words">
                       {link.title}
                     </span>
                   </div>

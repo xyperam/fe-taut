@@ -1,31 +1,38 @@
 type Shape = "circle" | "square";
 
+interface ProfileShapeSelectorProps {
+  selected: Shape | null;
+  onSelect: (shape: Shape) => void;
+}
+
 export default function ProfileShapeSelector({
   selected,
   onSelect,
-}: {
-  selected: Shape | null;
-  onSelect: (s: Shape) => void;
-}) {
+}: ProfileShapeSelectorProps) {
   return (
-    <div className="flex flex-row items-center justify-center gap-6">
-      {["circle", "square"].map((shape) => (
-        <div
-          key={shape}
-          onClick={() => onSelect(shape as Shape)}
-          className={`flex justify-center items-center border rounded-lg h-24 w-24 cursor-pointer transition ${
-            selected === shape
-              ? "border-black ring-2 ring-black"
-              : "border-gray-500"
-          }`}
-        >
+    <div className="flex flex-row items-center justify-center gap-6 bg-white p-4 rounded-md">
+      {["circle", "square"].map((shape) => {
+        const isSelected = selected === shape;
+
+        return (
           <div
-            className={`h-12 w-12 ${
-              selected === shape ? "bg-black" : "bg-gray-500"
-            } ${shape === "circle" ? "rounded-full" : "rounded-lg"}`}
-          ></div>
-        </div>
-      ))}
+            key={shape}
+            onClick={() => onSelect(shape as Shape)}
+            className={`flex justify-center items-center h-24 w-24 border rounded-lg cursor-pointer transition 
+              ${
+                isSelected
+                  ? "ring-4 ring-blue-500 border-blue-500"
+                  : "border-gray-300"
+              }`}
+          >
+            <div
+              className={`h-12 w-12 ${
+                shape === "circle" ? "rounded-full" : "rounded-lg"
+              } bg-gray-600`}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }

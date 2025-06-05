@@ -22,7 +22,7 @@ export default function DashboardPage() {
         {/* Preview hanya di desktop */}
         <div className="hidden md:flex w-[400px] bg-white border-l overflow-y-auto h-screen">
           <div className="-mt-8 w-full flex justify-center items-center">
-            {/* <Preview /> */}
+            <Preview />
           </div>
         </div>
       </div>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Image from "next/image";
 import {
   Popover,
@@ -6,11 +5,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { HexColorPicker } from "react-colorful";
-import { Button } from "@/components/ui/button";
 
-export function ColorPickerPopover() {
-  const [color, setColor] = useState("#f97316");
+interface ColorPickerPopoverProps {
+  color: string;
+  onChange: (color: string) => void;
+}
 
+export function ColorPickerPopover({
+  color,
+  onChange,
+}: ColorPickerPopoverProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -20,11 +24,11 @@ export function ColorPickerPopover() {
           width={50}
           height={50}
           quality={100}
-          className="w-[50px] h-[50px]"
+          className="w-[50px] h-[50px] cursor-pointer"
         />
       </PopoverTrigger>
       <PopoverContent className="w-auto">
-        <HexColorPicker color={color} onChange={setColor} />
+        <HexColorPicker color={color} onChange={onChange} />
       </PopoverContent>
     </Popover>
   );

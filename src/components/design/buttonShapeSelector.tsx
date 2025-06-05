@@ -1,12 +1,17 @@
+import { Theme } from "@/redux/slice/theme.slice";
 import { Button } from "../ui/button";
 import { ColorPickerPopover } from "../ui/colorPicker";
 
 export default function ButtonShapeSelector({
   selected,
   onSelect,
+  theme,
+  updateThemeField,
 }: {
   selected: string | null;
   onSelect: (s: string) => void;
+  theme: Theme;
+  updateThemeField: <K extends keyof Theme>(key: K, value: Theme[K]) => void;
 }) {
   const shapes = [
     { shape: "pill", className: "rounded-full" },
@@ -39,7 +44,10 @@ export default function ButtonShapeSelector({
         ))}
       </div>
       <div className="top-full mt-4 left-3">
-        <ColorPickerPopover />
+        <ColorPickerPopover
+          color={theme?.buttonColor || "#00000"}
+          onChange={(color) => updateThemeField("buttonColor", color)}
+        />
       </div>
     </div>
   );
