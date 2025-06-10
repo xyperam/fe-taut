@@ -3,7 +3,9 @@ import Sidebar from "@/components/layout/sidebar";
 import BottomNav from "@/components/layout/bottomNav";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
+import { fonts } from "@/lib/fontData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 export default function DashboardLayout({
   children,
 }: {
@@ -11,6 +13,13 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const themeFont = useSelector(
+    (state: RootState) => state.theme.theme?.fontFamily || "Poppins"
+  );
+  const fontKey = themeFont as keyof typeof fonts;
+  const fontVariableClass =
+    fonts[fontKey]?.variable || fonts["Poppins"].variable;
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -25,7 +34,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex flex-col h-screen ">
+    <div className={`flex flex-col h-screen ${fontVariableClass}`}>
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
         {/* main content and preview */}

@@ -5,6 +5,7 @@ import { useDesignSettings } from "@/hooks/useDesignSetting";
 import ThemeSelector from "./themeSelector";
 import { Loader2 } from "lucide-react";
 import BackgroundSelector from "./backgroundSelector";
+import FontSelector from "./fontSelector";
 export default function DesignContent() {
   const {
     theme,
@@ -48,7 +49,7 @@ export default function DesignContent() {
         </div>
 
         <ThemeSelector
-          selectedTheme={theme?.name ?? "default"} // ✅ ambil langsung dari Redux, bukan state lokal
+          selectedTheme={theme?.name ?? "default"} //  ambil langsung dari Redux, bukan state lokal
           onThemeSelect={handleThemeSelect}
         />
 
@@ -58,7 +59,16 @@ export default function DesignContent() {
           theme={theme}
           updateThemeField={updateThemeField}
         />
-        <BackgroundSelector />
+        <BackgroundSelector
+          selected={theme.background}
+          onSelect={(s) => updateThemeField("background", s)}
+          theme={theme}
+          updateThemeField={updateThemeField}
+        />
+        <FontSelector
+          selected={theme?.fontFamily || null}
+          onSelect={(font) => updateThemeField("fontFamily", font)}
+        />
       </div>
     </section>
   );
