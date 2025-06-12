@@ -22,7 +22,7 @@ export default function Sidebar() {
   return (
     <aside
       className="hidden md:flex flex-col min-w-[180px] w-40 lg:w-56 xl:w-64 transition-all duration-300"
-      style={{ backgroundColor: "#FFFFFFFF" }}
+      style={{ backgroundColor: "#c7e1e1" }}
     >
       <h2 className="text-xl font-bold mb-4 ml-4 mt-4">TAUT</h2>
       <DropdownMenu>

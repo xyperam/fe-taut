@@ -27,7 +27,7 @@ const NavigationItem = ({
          ${orientation === "vertical" ? "flex-col flex-1" : "justify-center"}
         ${
           isActive
-            ? "bg-blue-500 text-white"
+            ? "bg-[#b4d9c1] text-white"
             : "text-gray-700 hover:bg-gray-100"
         }
       `}

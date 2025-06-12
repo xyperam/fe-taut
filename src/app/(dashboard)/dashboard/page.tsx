@@ -8,7 +8,7 @@ export default function DashboardPage() {
   return (
     <main className="flex flex-col w-full h-full overflow-hidden">
       {/* Header Utama */}
-      <div className="bg-[#9FB3DF] px-4 py-3 shadow-md z-10">
+      <div className="bg-[#5ac0c0] px-4 py-3 shadow-md z-10">
         <h1 className="text-lg font-semibold text-white">Your link </h1>
       </div>
 

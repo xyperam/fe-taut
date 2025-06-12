@@ -6,6 +6,7 @@ import { faInstagram, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { usePreviewData } from "@/hooks/usePreviewData";
 import { socialPlatforms } from "@/lib/socialPlatforms";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { extractHexFromGradient } from "@/helper/extractHexFromGradient";
 export default function Preview() {
   const { theme, loading, error } = useTheme();
   const { profile, socialLinks, linkButtons } = usePreviewData();
@@ -13,11 +14,16 @@ export default function Preview() {
     <div
       className="w-[300px] h-[600px] rounded-[2.5rem] border-8 border-black shadow-xl overflow-hidden flex flex-col items-center"
       style={{
-        backgroundColor: theme?.background,
         fontFamily: theme?.fontFamily || "inherit",
+        backgroundColor:
+          theme?.backgroundType === "flat" ? theme?.background : undefined,
         backgroundImage:
           theme?.useBackgroundImage === true && theme.backgroundImageUrl
             ? `url(${theme.backgroundImageUrl})`
+            : theme?.backgroundType === "gradient"
+            ? `linear-gradient(to bottom, ${extractHexFromGradient(
+                theme.background
+              )}, transparent)`
             : undefined,
         backgroundSize: "cover",
         backgroundPosition: "center",

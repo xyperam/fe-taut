@@ -13,6 +13,7 @@ export default function DesignContent() {
     selectedThemeByName,
     selectedAvatarBorder,
     updateThemeField,
+    updateMultipleThemeFields,
   } = useDesignSettings();
   const isInitialLoading = !theme && loading;
   if (isInitialLoading || !theme) {
@@ -64,10 +65,13 @@ export default function DesignContent() {
           onSelect={(s) => updateThemeField("background", s)}
           theme={theme}
           updateThemeField={updateThemeField}
+          updateMultipleThemeFields={updateMultipleThemeFields}
         />
         <FontSelector
           selected={theme?.fontFamily || null}
           onSelect={(font) => updateThemeField("fontFamily", font)}
+          theme={theme}
+          updateThemeField={updateThemeField}
         />
       </div>
     </section>

@@ -41,6 +41,7 @@ export interface Theme {
   user_id: number;
   name: string;
   avatarBorder: string;
+  backgroundType: "flat" | "gradient";
   background: string;
   textColor: string;
   buttonColor: string;

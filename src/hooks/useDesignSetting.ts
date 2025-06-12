@@ -56,21 +56,32 @@ export const useDesignSettings = () => {
     <K extends keyof Theme>(key: K, value: Theme[K]) => {
       if (!themeData) return;
 
-      // ⏱️ update UI state instantly
+      //  update UI state instantly
       dispatch(setTheme({ ...themeData, [key]: value }));
 
-      // ⏳ update server dengan debounce
+      // update server dengan debounce
       debouncedUpdateRef.current(key, value);
+    },
+    [dispatch, themeData]
+  );
+  //Multiple payload
+  const updateMultipleThemeFields = useCallback(
+    (updates: Partial<Theme>) => {
+      if (!themeData) return;
+
+      dispatch(setTheme({ ...themeData, ...updates }));
+      dispatch(updateUserTheme(updates)); // langsung dispatch tanpa debounce
     },
     [dispatch, themeData]
   );
 
   return {
-    theme: themeData, // ✅ re-expose sebagai 'theme'
+    theme: themeData, //  re-expose sebagai 'theme'
     loading,
     error,
     selectedThemeByName,
     selectedAvatarBorder,
     updateThemeField,
+    updateMultipleThemeFields,
   };
 };
