@@ -23,11 +23,7 @@ export default function FontSelector({
             onClick={() => onSelect(font)}
             style={{ fontFamily: font }}
             className={`w-full flex justify-center cursor-pointer border rounded-md transition p-2 hover:border-gray-300 hover:shadow
-          ${
-            selected === font
-              ? "border-blue-600 ring-2 ring-black"
-              : "border-gray-400"
-          }`}
+          ${selected === font ? "ring-3 ring-[#6C63FF]" : "border-gray-400"}`}
           >
             {font}
           </div>

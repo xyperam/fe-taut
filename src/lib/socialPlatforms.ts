@@ -21,6 +21,7 @@ export type SocialPlatform = {
   baseUrl?: string;
   prefix?: string;
   platform: string;
+  active?: boolean;
 };
 
 export const socialPlatforms = [

@@ -36,29 +36,28 @@ export default function BackgroundSelector({
         <div
           onClick={() => handleBackgroundTypeChange("flat")}
           className={`${
-            theme.backgroundType === "flat" ? "ring-4 ring-blue-400" : ""
-          } w-28 h-48 sm:w-28 md:w-32 flex items-center justify-center rounded-md cursor-pointer`}
-          style={{
-            backgroundColor:
-              theme.backgroundType === "flat" ? theme.background : "#6b7280", // fallback slate
-          }}
-          // className="bg-slate-600 backdrop:aspect-square w-28 h-48 sm:w-28 md:w-32 flex items-center justify-center rounded-md"
+            theme.backgroundType === "flat" ? "ring-4 ring-[#6C63FF]" : ""
+          } w-28 h-48 sm:w-28 md:w-32 flex items-center justify-center rounded-md cursor-pointer bg-[#1F2937]`}
+          // style={{
+          //   backgroundColor:
+          //     theme.backgroundType === "flat" ? theme.background : "#6b7280", // fallback slate
+          // }}
         >
-          <h1 className="text-whi">Flat Color</h1>
+          <h1 className="text-white">Flat Color</h1>
         </div>
         <div
           onClick={() =>
             handleBackgroundTypeChange(
               "gradient",
-              "bg-gradient-to-b from-[#3b82f6]"
+              `bg-gradient-to-b from-[${theme.background}]`
             )
           }
           className={`${
-            theme.backgroundType === "gradient" ? "ring-4 ring-blue-400" : ""
-          } bg-gradient-to-b from-[#3b82f6] w-28 h-48 sm:w-28 md:w-32 flex items-center justify-center rounded-md cursor-pointer`}
+            theme.backgroundType === "gradient" ? "ring-4 ring-[#6C63FF]" : ""
+          } bg-gradient-to-b from-[#1F2937] w-28 h-48 sm:w-28 md:w-32 flex items-center justify-center rounded-md cursor-pointer`}
           // className="bg-gradient-to-b from-[#3b82f6] aspect-square w-28 h-48 sm:w-28 md:w-32 flex items-center justify-center rounded-md"
         >
-          <h1 className="text-whi">Gradient</h1>
+          <h1 className="text-white">Gradient</h1>
         </div>
       </div>
       <div className="top-full mt-4 left-3 relative">

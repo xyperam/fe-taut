@@ -33,7 +33,7 @@ export default function ThemeSelector({
               onClick={() => onThemeSelect(theme.key)}
               className={` w-full max-w-[180px] mx-auto cursor-pointer rounded-md border-2 p-2 transition focus:outline-none focus:ring-2 ${
                 selectedTheme === theme.key
-                  ? "border-blue-600 ring-blue-200"
+                  ? "ring-3 ring-[#6C63FF]"
                   : "border-transparent"
               }`}
             >

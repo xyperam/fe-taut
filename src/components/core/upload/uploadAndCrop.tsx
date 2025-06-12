@@ -13,6 +13,7 @@ import {
   DialogDescription,
   DialogHeader,
 } from "@/components/ui/dialog";
+import { ImagePlus } from "lucide-react";
 
 type CroppedArea = {
   width: number;
@@ -42,6 +43,14 @@ export default function UploadAndCrop({
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      //skip crop jika gif
+      if (file.type === "image/gif") {
+        onCropComplete(file);
+        onOpenChange(false); // tutup modal crop
+        return; // stop proses selanjutnya
+      }
+
+      // ✅ Lanjut crop untuk selain GIF
       const imageDataUrl = await readFile(file);
       setImageSrc(imageDataUrl);
     }
@@ -79,7 +88,25 @@ export default function UploadAndCrop({
           </DialogDescription>
         </DialogHeader>
 
-        <Input type="file" accept="image/*" onChange={handleFileChange} />
+        {/* <Input type="file" accept="image/*" onChange={handleFileChange} /> */}
+        <Input
+          id="file-upload"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        <label
+          htmlFor="file-upload"
+          className="border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition"
+        >
+          <ImagePlus className="w-10 h-10 text-muted-foreground mb-2" />
+          <p className="text-sm text-gray-500 text-center">
+            <strong>Add image here</strong>
+            <br />
+            <span className="text-xs">(PNG, JPG, GIF)</span>
+          </p>
+        </label>
 
         {imageSrc && (
           <>

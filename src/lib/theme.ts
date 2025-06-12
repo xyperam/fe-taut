@@ -1,5 +1,6 @@
 type Theme = {
   name: string;
+  backgroundType: "flat" | "gradient";
   background: string;
   textColor: string;
   buttonColor: string;
@@ -14,7 +15,8 @@ type Theme = {
 export const defaultThemes: Theme[] = [
   {
     name: "sunset",
-    background: "#fff7ed",
+    backgroundType: "flat",
+    background: "#ECE9E4FF",
     textColor: "#1f2937",
     buttonColor: "#f97316",
     buttonTextColor: "#fff",
@@ -22,13 +24,15 @@ export const defaultThemes: Theme[] = [
   },
   {
     name: "default",
-    background: "#FFFBEA",
+    backgroundType: "flat",
+    background: "#FCFCFCFF",
     textColor: "#111827",
-    buttonColor: "#F59E0B",
+    buttonColor: "#FCFAF6FF",
     buttonTextColor: "#FFFBEA",
   },
   {
     name: "dark",
+    backgroundType: "flat",
     background: "#1F2937",
     textColor: "#D1D5DB",
     buttonColor: "#374151",

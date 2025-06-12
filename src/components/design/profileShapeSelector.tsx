@@ -19,11 +19,7 @@ export default function ProfileShapeSelector({
             key={shape}
             onClick={() => onSelect(shape as Shape)}
             className={`flex justify-center items-center h-24 w-24 border rounded-lg cursor-pointer transition 
-              ${
-                isSelected
-                  ? "ring-4 ring-blue-500 border-blue-500"
-                  : "border-gray-300"
-              }`}
+              ${isSelected ? "ring-4 ring-[#6C63FF]" : "border-gray-300"}`}
           >
             <div
               className={`h-12 w-12 ${

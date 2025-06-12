@@ -1,3 +1,4 @@
+"use client";
 import { useTheme } from "@/hooks/useTheme";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -122,14 +123,21 @@ export default function Preview() {
                   onClick={() => window.open(link.url, "_blank")} //
                 >
                   <div className="flex items-center w-full px-2 py-3">
-                    <div className="h-[20px] w-[20px]">
+                    <div className="h-[25px] w-[25px]">
                       {link.imageUrl && (
-                        <Image
+                        <img
                           src={link.imageUrl}
                           alt="icon"
-                          width={20}
-                          height={20}
-                          className="object-contain shrink-0"
+                          width={25}
+                          height={25}
+                          className={`object-contain shrink-0
+              ${
+                theme?.buttonShape === "pill"
+                  ? "rounded-full"
+                  : theme?.buttonShape === "rounded"
+                  ? "rounded-sm"
+                  : ""
+              }`}
                         />
                       )}
                     </div>

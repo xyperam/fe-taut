@@ -31,9 +31,7 @@ export default function ButtonShapeSelector({
             key={item.shape}
             onClick={() => onSelect(item.shape)}
             className={`w-full flex justify-center items-center cursor-pointer border rounded-lg transition p-2 ${
-              selected === item.shape
-                ? "border-blue-600 ring-2 ring-black"
-                : "border-none"
+              selected === item.shape ? "ring-2 ring-[#6C63FF]" : "border-none"
             }`}
           >
             <Button
