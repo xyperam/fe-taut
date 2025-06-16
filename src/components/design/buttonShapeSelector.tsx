@@ -24,7 +24,7 @@ export default function ButtonShapeSelector({
 
   return (
     <div className="bg-white flex flex-col mx-auto w-full rounded-md shadow-xl p-4">
-      <h1 className="text-lg font-semibold mb-4">Desain Tombol</h1>
+      <h1 className="text-lg font-semibold mb-4">Button</h1>
       <div className="grid grid-cols-3 gap-x-6 gap-y-2 place-items-center">
         {shapes.map((item) => (
           <div

@@ -42,8 +42,8 @@ export function RemoveImageDialog({
             className="object-contain w-24 h-12 relative "
           />
         </div>
-        <Button onClick={onOpenModalUpload}>Ubah</Button>
-        <Button onClick={onDeleteImg}>Hapus</Button>
+        <Button onClick={onOpenModalUpload}>Change</Button>
+        <Button onClick={onDeleteImg}>Delete</Button>
       </DialogContent>
     </Dialog>
   );

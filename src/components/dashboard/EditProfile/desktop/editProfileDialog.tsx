@@ -38,7 +38,7 @@ export default function EditProfileDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Edit tampilan nama dan bio</DialogTitle>
+          <DialogTitle>Edit Display Name and Bio</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <Input
@@ -59,7 +59,7 @@ export default function EditProfileDialog({
             className="w-full"
             onClick={() => onSubmit({ username: nameValue, bio: bioValue })}
           >
-            Simpan
+            Save
           </Button>
         </div>
       </DialogContent>

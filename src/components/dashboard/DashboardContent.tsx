@@ -116,7 +116,7 @@ export default function DashboardContent() {
         </div>
 
         <Button className="w-full h-10 mt-3 mb-3" onClick={openAddLinkDialog}>
-          + Tambahkan Link
+          + Add New Link
         </Button>
 
         <DialogInputLink

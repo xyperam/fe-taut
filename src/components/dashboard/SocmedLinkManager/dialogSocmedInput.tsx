@@ -49,7 +49,7 @@ export default function DialogSocmedInput({
         <DialogHeader>
           <DialogTitle>
             <FontAwesomeIcon icon={platform.icon} className="mr-2" />
-            Tambahkan link {platform.name}
+            Add Link {platform.name}
           </DialogTitle>
         </DialogHeader>
 
@@ -63,7 +63,7 @@ export default function DialogSocmedInput({
         {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
         <div className="flex flex-row gap-2 mt-4">
           <Button className="flex-1" onClick={onSubmit}>
-            Simpan
+            Save
           </Button>
         </div>
       </DialogContent>

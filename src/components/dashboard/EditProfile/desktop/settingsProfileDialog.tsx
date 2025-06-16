@@ -34,7 +34,7 @@ export default function DialogProfileSettings({
               onClose(false);
             }}
           >
-            Ubah Data Profil
+            Edit Display Name and Bio
           </Button>
           <Button
             className="w-full"
@@ -44,7 +44,7 @@ export default function DialogProfileSettings({
               onClose(false);
             }}
           >
-            Ganti Foto
+            Change Profile Picture
           </Button>
         </div>
       </DialogContent>

@@ -106,7 +106,7 @@ export const CardItem = ({
             ) : (
               <FontAwesomeIcon
                 icon={faToggleOn}
-                className="text-blue-500 text-lg"
+                className="text-purple-500 text-lg"
               />
             )}
           </button>

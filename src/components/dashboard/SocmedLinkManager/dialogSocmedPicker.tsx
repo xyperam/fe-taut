@@ -23,9 +23,7 @@ export default function DialogSocmedPicker({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-[90vw] w-[400px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-center">
-            Tambahkan social media
-          </DialogTitle>
+          <DialogTitle className="text-center">Add Social Media</DialogTitle>
         </DialogHeader>
 
         <div className="mt-4">

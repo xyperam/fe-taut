@@ -42,7 +42,7 @@ export default function DesignContent() {
           </div>
         )} */}
         <div className="bg-white flex flex-col mx-auto w-full rounded-md shadow-xl p-4">
-          <h1 className="text-lg font-semibold mb-4">Bingkai Foto Profil</h1>
+          <h1 className="text-lg font-semibold mb-4">Profile Picture</h1>
           <ProfileShapeSelector
             selected={theme.avatarBorder as "circle" | "square"}
             onSelect={handleAvatarBorderSelect}

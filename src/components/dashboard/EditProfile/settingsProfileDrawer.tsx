@@ -32,11 +32,11 @@ export default function SettingsProfileDrawer({
         </DrawerHeader>
 
         <div className="p-4 cursor-pointer" onClick={onEditPhotoClick}>
-          Edit Foto Profil
+          Edit Profile Picture
         </div>
 
         <div className="p-4 cursor-pointer" onClick={onEditClick}>
-          Edit Tampilan Nama dan Bio
+          Edit Display Name and Bio
         </div>
       </DrawerContent>
     </Drawer>

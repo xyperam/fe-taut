@@ -19,7 +19,7 @@ export default function ThemeSelector({
 
   return (
     <div className="bg-white flex flex-col mx-auto w-full rounded-md shadow-xl p-4">
-      <h1 className="text-lg font-semibold mb-4">Gaya Tema</h1>
+      <h1 className="text-lg font-semibold mb-4">Theme</h1>
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
         {themes.map((theme) => {
           console.log("compare", {

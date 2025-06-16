@@ -9,6 +9,7 @@ export const getProfile = createAsyncThunk(
       const response = await api.get("/profile");
       const data = response.data.profile;
       return {
+        username: data.username,
         displayname: data.display_name,
         bio: data.bio,
         profilePicture: data.profile_picture,
@@ -71,6 +72,7 @@ export const updateProfilePicture = createAsyncThunk(
 
 interface ProfileState {
   profile: {
+    username: string;
     displayname: string;
     bio: string;
     profilePicture: string;
@@ -83,6 +85,7 @@ interface ProfileState {
 
 const initialState: ProfileState = {
   profile: {
+    username: "",
     displayname: "",
     bio: "",
     profilePicture: "",

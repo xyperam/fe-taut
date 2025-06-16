@@ -37,7 +37,7 @@ export default function EditProfileDrawer({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className="h-[50vh] ">
         <DrawerHeader>
-          <DrawerTitle>Edit tampilan nama dan bio</DrawerTitle>
+          <DrawerTitle>Edit display name and bio</DrawerTitle>
         </DrawerHeader>
         {/* Konten drawer di sini */}
         <div className="px-4">
@@ -60,7 +60,7 @@ export default function EditProfileDrawer({
           className="m-4"
           onClick={() => onSubmit({ username: nameValue, bio: bioValue })}
         >
-          Simpan
+          Save
         </Button>
       </DrawerContent>
     </Drawer>

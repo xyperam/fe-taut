@@ -19,7 +19,7 @@ export function ColorPickerPopover({
     <Popover>
       <PopoverTrigger asChild>
         <Image
-          src="/images/color-wheel.png"
+          src="/images/wand.png"
           alt="color-pallete"
           width={50}
           height={50}

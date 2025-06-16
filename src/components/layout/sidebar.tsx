@@ -24,7 +24,9 @@ export default function Sidebar() {
       className="hidden md:flex flex-col min-w-[180px] w-40 lg:w-56 xl:w-64 transition-all duration-300"
       style={{ backgroundColor: "#E0E0E3" }}
     >
-      <h2 className="text-xl font-bold mb-4 ml-4 mt-4">TAUT</h2>
+      <h2 className="text-3xl font-bold mb-4 ml-4 mt-4 text-black">
+        WizzLink✨
+      </h2>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex flex-row w-full gap-2 p-2 cursor-pointer bg-[#E0E0E3] hover:bg-gray-100">
@@ -37,7 +39,7 @@ export default function Sidebar() {
               <AvatarFallback>{profile.displayname?.[0] || "?"}</AvatarFallback>
             </Avatar>
             <div className="flex items-center">
-              <h1 className="text-lg">{profile.displayname}</h1>
+              <h1 className="text-lg">{profile.username}</h1>
             </div>
           </div>
         </DropdownMenuTrigger>

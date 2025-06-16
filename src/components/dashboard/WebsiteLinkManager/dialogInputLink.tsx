@@ -64,7 +64,7 @@ export default function DialogInputLink({
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Tambahkan Link Baru</DialogTitle>
+          <DialogTitle>Add New Link</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -76,7 +76,7 @@ export default function DialogInputLink({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Judul</FormLabel>
+                  <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Contoh: Website Portofolio"
@@ -104,7 +104,7 @@ export default function DialogInputLink({
               <p className="text-sm text-red-500 font-medium">{error}</p>
             )}
             <Button type="submit" className="w-full">
-              Simpan
+              Save
             </Button>
           </form>
         </Form>

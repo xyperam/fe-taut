@@ -54,14 +54,14 @@ export default function DialogSocmedEdit({
             className="flex-1 bg-sky-400 hover:bg-sky-600 text-white "
             onClick={onSubmit}
           >
-            Simpan
+            Save
           </Button>
           <Button
             className="flex-1 bg-gray-300 hover:bg-red-200 text-black "
             onClick={onDelete}
           >
             <FontAwesomeIcon icon={faTrash} style={{ color: "black" }} />
-            Hapus Icon
+            Delete Icon
           </Button>
         </div>
       </DialogContent>

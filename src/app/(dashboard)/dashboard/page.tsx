@@ -10,6 +10,7 @@ export default function DashboardPage() {
       {/* Header Utama */}
       <div className="bg-[#A7A3F0] px-4 py-3 shadow-md z-10">
         <h1 className="text-lg font-semibold text-white">Your link </h1>
+        {/* <span>http://localhost:3000/{username}</span> */}
       </div>
 
       {/* Konten Utama */}
