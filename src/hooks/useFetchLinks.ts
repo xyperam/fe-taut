@@ -20,7 +20,11 @@ export function useFetchLinks() {
   }, [dispatch]);
 
   const update = useCallback(
-    async (id: string, field: "title" | "url", value: string) => {
+    async (
+      id: string,
+      field: "title" | "url" | "active",
+      value: string | boolean
+    ) => {
       const linkId = Number(id);
       const existingLink = links.find((link) => link.id === linkId);
 
@@ -92,6 +96,30 @@ export function useFetchLinks() {
     [dispatch, links]
   );
 
+  const toogleActive = useCallback(
+    async (id: string) => {
+      const linkId = Number(id);
+      const existingLink = links.find((link) => link.id === linkId);
+      if (!existingLink) {
+        console.warn(`Link with ID ${id} not found`);
+        return;
+      }
+      const updatedLink = {
+        ...existingLink,
+        active: !existingLink.active, // toggle boolean
+        type: existingLink.type ?? "website",
+        platform: existingLink.platform ?? "custom",
+      };
+      try {
+        await dispatch(editLink(updatedLink)).unwrap();
+      } catch (err) {
+        console.error("Gagal toggle status aktif:", err);
+        throw err;
+      }
+    },
+    [dispatch, links]
+  );
+
   return {
     links,
     loading,
@@ -101,5 +129,6 @@ export function useFetchLinks() {
     handleDeleteCard,
     uploadHeaderImage,
     handleDeleteImage,
+    toogleActive,
   };
 }

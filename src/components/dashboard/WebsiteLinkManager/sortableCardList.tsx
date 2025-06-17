@@ -23,6 +23,7 @@ type LinkItem = {
   title: string;
   url: string;
   imageUrl: string;
+  active: boolean;
 };
 
 export default function SortableCardList() {
@@ -35,6 +36,7 @@ export default function SortableCardList() {
     handleDeleteCard,
     uploadHeaderImage,
     handleDeleteImage,
+    toogleActive,
   } = useFetchLinks();
   const [items, setItems] = useState<LinkItem[]>([]);
   const [openModal, setOpenModal] = useState(false);
@@ -62,6 +64,7 @@ export default function SortableCardList() {
             link.imageUrl && link.imageUrl.trim() !== ""
               ? link.imageUrl
               : defaultImage,
+          active: link.active ?? false,
         }));
       setItems(filtered);
     }
@@ -106,11 +109,24 @@ export default function SortableCardList() {
       }
     }
   };
+  const handleToggleActive = async (id: string, value: boolean) => {
+    // ⬇️ Update lokal terlebih dahulu agar UI langsung berubah
+    setItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, active: value } : item))
+    );
+
+    try {
+      await update(id, "active", value);
+      await fetch(); // opsional: sync dari backend
+    } catch (err) {
+      console.error("Toggle aktif gagal:", err);
+    }
+  };
 
   const handleUpdateItem = async (
     id: string,
-    field: "title" | "url",
-    value: string
+    field: "title" | "url" | "active",
+    value: string | boolean
   ) => {
     setItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
@@ -157,6 +173,8 @@ export default function SortableCardList() {
                   setSelectedImageUrl(item.imageUrl);
                   setOpenModalRemove(true);
                 }}
+                active={item.active} // ⬅️ Tambahkan ini
+                onToggle={() => handleToggleActive(item.id, !item.active)}
               />
             ))}
           </div>

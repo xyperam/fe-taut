@@ -8,20 +8,28 @@ type Props = {
   title: string;
   url: string;
   imageUrl: string;
-  onUpdate: (id: string, field: "title" | "url", value: string) => void;
+  active: boolean;
+  onUpdate: (
+    id: string,
+    field: "title" | "url" | "active",
+    value: string | boolean
+  ) => void;
   onDelete: () => void;
   onOpenModalUpload: () => void;
   onOpenModalRemove: () => void;
+  onToggle: () => void;
 };
 export default function SortableCard({
   id,
   title,
   url,
   imageUrl,
+  active,
   onUpdate,
   onDelete,
   onOpenModalUpload,
   onOpenModalRemove,
+  onToggle,
 }: Props) {
   const { handleDeleteCard } = useFetchLinks();
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -43,6 +51,8 @@ export default function SortableCard({
       onDelete={onDelete} // Updated to pass id as an argument
       onOpenModalUpload={onOpenModalUpload}
       onOpenModalRemove={onOpenModalRemove}
+      onToggle={onToggle}
+      active={active}
     />
   );
 }

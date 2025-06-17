@@ -103,34 +103,36 @@ export default function Preview() {
 
             {/* Links Hardcoded */}
             <div className="flex flex-col gap-3 w-full">
-              {linkButtons.map((link, i) => (
-                <Button
-                  key={i}
-                  className="w-full min-h-[48px] p-0"
-                  style={{
-                    backgroundColor: theme?.buttonColor,
-                    color: theme?.textColor,
-                    borderColor: theme?.buttonBorderColor || "transparent",
-                    borderWidth: theme?.buttonBorderColor ? 1 : 0,
-                    borderStyle: "solid",
-                    borderRadius:
-                      theme?.buttonShape === "pill"
-                        ? "9999px"
-                        : theme?.buttonShape === "rounded"
-                        ? "0.5rem"
-                        : "0",
-                  }}
-                  onClick={() => window.open(link.url, "_blank")} //
-                >
-                  <div className="flex items-center w-full px-2 py-3">
-                    <div className="h-[25px] w-[25px]">
-                      {link.imageUrl && (
-                        <img
-                          src={link.imageUrl}
-                          alt="icon"
-                          width={25}
-                          height={25}
-                          className={`object-contain shrink-0
+              {linkButtons
+                .filter((link) => link.active) // hanya link aktif
+                .map((link, i) => (
+                  <Button
+                    key={i}
+                    className="w-full min-h-[48px] p-0"
+                    style={{
+                      backgroundColor: theme?.buttonColor,
+                      color: theme?.textColor,
+                      borderColor: theme?.buttonBorderColor || "transparent",
+                      borderWidth: theme?.buttonBorderColor ? 1 : 0,
+                      borderStyle: "solid",
+                      borderRadius:
+                        theme?.buttonShape === "pill"
+                          ? "9999px"
+                          : theme?.buttonShape === "rounded"
+                          ? "0.5rem"
+                          : "0",
+                    }}
+                    onClick={() => window.open(link.url, "_blank")} //
+                  >
+                    <div className="flex items-center w-full px-2 py-3">
+                      <div className="h-[25px] w-[25px]">
+                        {link.imageUrl && (
+                          <img
+                            src={link.imageUrl}
+                            alt="icon"
+                            width={25}
+                            height={25}
+                            className={`object-contain shrink-0
               ${
                 theme?.buttonShape === "pill"
                   ? "rounded-full"
@@ -138,15 +140,15 @@ export default function Preview() {
                   ? "rounded-sm"
                   : ""
               }`}
-                        />
-                      )}
+                          />
+                        )}
+                      </div>
+                      <span className="flex-1 text-sm leading-snug text-center break-words">
+                        {link.title}
+                      </span>
                     </div>
-                    <span className="flex-1 text-sm leading-snug text-center break-words">
-                      {link.title}
-                    </span>
-                  </div>
-                </Button>
-              ))}
+                  </Button>
+                ))}
             </div>
 
             {/* Footer */}

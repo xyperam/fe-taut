@@ -1,3 +1,3 @@
 export async function middleware() {
-    console.log('middleware')
+  console.log("middleware");
 }

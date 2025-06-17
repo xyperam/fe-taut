@@ -20,19 +20,26 @@ type Props = {
   title: string;
   url: string;
   imageUrl: string;
-  onUpdate: (field: "title" | "url", value: string) => void;
+  active: boolean;
+  onUpdate: (
+    field: "title" | "url" | "active",
+    value: string | boolean
+  ) => void;
+
   dragHandleProps?: any;
   cardRef?: (node: HTMLElement | null) => void;
   style?: React.CSSProperties;
   onDelete: () => void;
   onOpenModalUpload: () => void;
   onOpenModalRemove: () => void;
+  onToggle: () => void;
 };
 
 export const CardItem = ({
   title,
   url,
   imageUrl,
+  active,
   onUpdate,
   dragHandleProps,
   cardRef,
@@ -40,6 +47,7 @@ export const CardItem = ({
   onDelete,
   onOpenModalUpload,
   onOpenModalRemove,
+  onToggle,
 }: Props) => {
   const [isToggled, setIsToggled] = useState(false);
   return (
@@ -94,19 +102,16 @@ export const CardItem = ({
             className="text-lg text-gray-400 hover:text-red-400 cursor-pointer"
             onClick={onDelete}
           />
-          <button
-            onClick={() => setIsToggled((prev) => !prev)}
-            className="cursor-pointer"
-          >
-            {isToggled ? (
-              <FontAwesomeIcon
-                icon={faToggleOff}
-                className="text-gray-500 text-lg"
-              />
-            ) : (
+          <button onClick={onToggle} className="cursor-pointer">
+            {active ? (
               <FontAwesomeIcon
                 icon={faToggleOn}
                 className="text-purple-500 text-lg"
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faToggleOff}
+                className="text-gray-500 text-lg"
               />
             )}
           </button>
